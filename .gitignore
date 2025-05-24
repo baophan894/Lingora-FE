@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Các tệp môi trường như .env chứa thông tin nhạy cảm
+.env
