@@ -1,0 +1,72 @@
+### Cấu hình axios trong UTILS
+
+1. axiosPublic
+- Dùng cho các API không cần xác thực (login, register)
+- Không cần gửi token trong header
+- Thường dùng cho public endpoints
+
+2. axiosPrivate (axiosInstance)
+- Dùng cho các API có middleware isAuthenticate
+- Tự động gửi token trong Authorization header
+- Xử lý refresh token khi token hết hạn
+- Sử dụng cho các protected endpoints (GET, POST, PUT, PATCH, DELETE)
+- Tự động giải mã token để lấy thông tin user
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+### Cấu trúc redux toolkit
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+### Ghi chú
+Partical -> Kiểu 1 phần optional của T
+- Một utility type của TS, biến tất cả các thuộc tính của kiểu T thành tùy chọn (optional)
+
+Partial<User> =>
+{
+  id?: string
+  name?: string
+  email?: string
+}
+
+createUserAPI(data: Partial<User>): ->  Khi tạo user mới, có thể chưa có id, hoặc chỉ cần name, email.
+updateUserAPI({ id, data }: { id: string, data: Partial<User> }): -> Khi cập nhật user, có thể chỉ sửa email hoặc name, không cần gửi toàn bộ dữ liệu.\
+
+
+
+### Giải thích về auth redux
+authThunk - xử lý gọi API và side effects
++ dùng createAsyncThunk để gọi API login -> trả về repsonse.data -> 3 trạng thái promise (pending, fulfilled, rejected)
++ khi dispatch hàm từ authThunk -> action type tạo ra -> bạn-điịnh-nghĩa/pending - /fulfilled - /rejected
+
+## authSlice - quản lý redux state
++ khởi tạo trạng thái (user, token, loading, error)
++ lắng nghe các trạng thái trả về pending / fulfilled / rejected từ authThunk
++ cập nhật state tương ứng
++ viết reducer customer như logout - được tạo bởi slice
+
+extraReducers - xử lý các action không được tạo bởi slice như authThunk / createAsyncThunk 
+builder - object giúp lắng nghe 3 trạng thái từ thunk
+.addCase xử lý khi lắng nghe từng case
+
+
+### Cú pháp sử dụng trong components
+
+- const dispatch = useDispatch<AppDispatch>() 
+
+- await dispatch(register({ email, password, name })).unwrap() 
+
+- await dispatch(login({ email, password })).unwrap() 
+
+- const { error } = useAppSelector(state => state.auth);
+
+- unwrap() giúp lấy kết quả thực nếu thành công hoặc ném lỗi nếu thất bại
+- nếu không có unwrap => trả về action object
+
+# Types 
+Đặt trạng thái trả về và dữ liệu của trạng thái trả về
+
+
+* useAppSeletor = useSelector -> dùng để đọc dữ liệu và kiểm tra lỗi (chỉ được phép đọc)
+* useAppDispatch -> dùng để dispatch action lên redux store 

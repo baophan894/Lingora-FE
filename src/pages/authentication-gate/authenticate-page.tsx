@@ -43,7 +43,7 @@ export default function AuthPage() {
         <div
             className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: `url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80')`
+              backgroundImage: `url('https://res.cloudinary.com/dfvy81evi/image/upload/v1748061418/Lingora_1_c7cbws.png')`
             }}
         />
 
@@ -57,36 +57,27 @@ export default function AuthPage() {
           {/* Left Side - Background Content (Hidden on mobile) */}
           <div className="hidden lg:flex lg:flex-1 items-center justify-center p-12">
             <div className="max-w-lg text-center text-white">
-              <h1 className="text-6xl xl:text-7xl font-bold mb-8 bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-transparent drop-shadow-lg">
-                Chào Mừng
-              </h1>
-              <p className="text-xl xl:text-2xl text-blue-100 leading-relaxed mb-8 drop-shadow-md">
-                Khám phá thế giới mới cùng với chúng tôi. Trải nghiệm tuyệt vời đang chờ đón bạn.
-              </p>
-              <div className="flex justify-center space-x-6">
-                <div className="w-4 h-4 bg-white/70 rounded-full animate-pulse" />
-                <div className="w-4 h-4 bg-white/50 rounded-full animate-pulse delay-75" />
-                <div className="w-4 h-4 bg-white/70 rounded-full animate-pulse delay-150" />
-              </div>
+              
+             
             </div>
           </div>
 
           {/* Right Side - Form */}
-          <div className="w-full lg:w-96 xl:w-[28rem] bg-white/95 backdrop-blur-sm shadow-2xl">
+          <div className="w-full lg:w-[480px] xl:w-[520px] bg-transparent p-6 lg:p-8"> {/* Increased padding */}
             <div className="h-full flex items-center justify-center p-8 xl:p-12 overflow-y-auto">
-              <div className="w-full max-w-sm">
+              <div className="w-full max-w-md"> {/* Increased max-width */}
 
                 {/* Header */}
                 <div className="text-center mb-8">
-                  <div className="mx-auto w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+                  <div className="mx-auto w-16 h-16 bg-gradient-to-r from-red-800 to-red-400 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
                     <User className="w-8 h-8 text-white" />
                   </div>
 
                   <h2 className="text-3xl xl:text-4xl font-bold text-gray-900 mb-3">
                     {isLogin ? 'Đăng Nhập' : 'Đăng Ký'}
                   </h2>
-                  <p className="text-gray-600 text-lg">
-                    {isLogin ? 'Chào mừng bạn quay trở lại!' : 'Tạo tài khoản mới của bạn'}
+                  <p className="text-black text-lg">
+                    {isLogin ? 'Chào mừng bạn quay trở lại Lingora' : 'Tạo tài khoản mới của bạn'}
                   </p>
                 </div>
 
@@ -95,8 +86,8 @@ export default function AuthPage() {
 
                   {/* Full Name Field (only for register) */}
                   {!isLogin && (
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-700">Họ và tên</label>
+                      <div className="space-y-2 text-left"> {/* Add text-left here */}
+                        <label className="block text-sm font-medium text-gray-700 text-left">Họ và tên</label>
                         <div className="relative">
                           <User className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                           <input
@@ -113,8 +104,8 @@ export default function AuthPage() {
                   )}
 
                   {/* Email Field */}
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700">Email</label>
+                  <div className="space-y-2 text-left"> {/* Add text-left here */}
+                    <label className="block text-sm font-medium text-gray-700 text-left">Email</label>
                     <div className="relative">
                       <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                       <input
@@ -130,8 +121,8 @@ export default function AuthPage() {
                   </div>
 
                   {/* Password Field */}
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700">Mật khẩu</label>
+                  <div className="space-y-2 text-left"> {/* Add text-left here */}
+                    <label className="block text-sm font-medium text-gray-700 text-left">Mật khẩu</label>
                     <div className="relative">
                       <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                       <input
@@ -155,8 +146,8 @@ export default function AuthPage() {
 
                   {/* Confirm Password Field (only for register) */}
                   {!isLogin && (
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-700">Xác nhận mật khẩu</label>
+                      <div className="space-y-2 text-left"> {/* Add text-left here */}
+                        <label className="block text-sm font-medium text-gray-700 text-left">Xác nhận mật khẩu</label>
                         <div className="relative">
                           <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                           <input
@@ -201,7 +192,7 @@ export default function AuthPage() {
                   {/* Submit Button */}
                   <button
                       onClick={handleSubmit}
-                      className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 px-6 rounded-xl text-base font-medium hover:from-blue-700 hover:to-purple-700 focus:ring-4 focus:ring-blue-200 transition-all duration-200 flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                      className="w-full bg-gradient-to-r from-red-800 to-red-400 text-white py-4 px-6 rounded-xl text-base font-medium hover:from-blue-700 hover:to-purple-700 focus:ring-4 focus:ring-blue-200 transition-all duration-200 flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                   >
                     <span>{isLogin ? 'Đăng Nhập' : 'Đăng Ký'}</span>
                     <ArrowRight className="w-5 h-5" />
@@ -214,7 +205,7 @@ export default function AuthPage() {
                     {isLogin ? 'Chưa có tài khoản?' : 'Đã có tài khoản?'}
                     <button
                         onClick={toggleMode}
-                        className="ml-2 text-blue-600 hover:text-blue-800 font-medium transition-colors"
+                        className="ml-2 text-red-400 hover:text-read-800 font-medium transition-colors"
                     >
                       {isLogin ? 'Đăng ký ngay' : 'Đăng nhập ngay'}
                     </button>
