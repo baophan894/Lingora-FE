@@ -1,23 +1,21 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Provider } from 'react-redux';
+import { store } from './store/store';
 import { guestRoutes, studentRoutes, teacherRoutes, centerRoutes } from './routes/routes-config';
 import './App.css';
-import AuthenticateGate from './pages/authentication-gate/authenticate-page';
 
 const router = createBrowserRouter([
-  ...guestRoutes,
-  ...studentRoutes,
-  ...teacherRoutes,
-  ...centerRoutes
+  ...guestRoutes,    // Includes LandingPage, Login, Reviews with StudentLayout
+  ...studentRoutes,  // Student specific routes with StudentLayout
+  ...teacherRoutes,  // Teacher specific routes with TeacherLayout
+  ...centerRoutes    // Center management routes with CenterLayout
 ]);
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path='/login' element={<AuthenticateGate/>}/> 
-      </Routes>
-    </Router>
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   );
 }
 

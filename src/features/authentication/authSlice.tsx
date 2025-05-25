@@ -1,7 +1,8 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import {
   signInWithEmailAndPassword,
   signUpWithEmailAndPassword,
+  signInWithGoogle,
 } from "./authThunk";
 import type { AuthResponse, ErrorResponse } from "../../types/authentication-type";
 
@@ -27,19 +28,25 @@ const authSlice = createSlice({
       state.user = null;
       state.token = null;
       localStorage.removeItem("token");
+      localStorage.removeItem("user");
     },
   },
   extraReducers: (builder) => {
     builder
-
-      // .addCase để lắng nghe 1 trạng thái
-      // .addMatcher để lắng nghe nhiều trạng thái
-
       .addCase(signInWithEmailAndPassword.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload.user;
-        state.token = action.payload.accessToken;
-        localStorage.setItem("token", action.payload.accessToken);
+        state.token = action.payload.access_token;
+        localStorage.setItem("user", JSON.stringify(action.payload.user));
+        localStorage.setItem("token", action.payload.access_token);
+      })
+
+      .addCase(signInWithGoogle.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.user;
+        state.token = action.payload.access_token;
+        localStorage.setItem("user", JSON.stringify(action.payload.user));
+        localStorage.setItem("token", action.payload.access_token);
       })
 
       .addCase(signUpWithEmailAndPassword.fulfilled, (state, action) => {
@@ -56,9 +63,9 @@ const authSlice = createSlice({
       // Xử lý chung cho tất cả rejected action
       .addMatcher(
         (action) => action.type.endsWith("/rejected"),
-        (state, action) => {
+        (state, action: PayloadAction<ErrorResponse>) => {
           state.loading = false;
-          state.error = action.payload || action.error.message || "Unknown error";
+          state.error = action.payload || { message: "Unknown error" };
         }
       );
   },
