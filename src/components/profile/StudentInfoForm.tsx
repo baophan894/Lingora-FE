@@ -10,6 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { toast } from "sonner"
 import { Upload, Save, Loader2 } from "lucide-react"
+import { useAppSelector } from "../../store/hooks"
+import type { RootState } from "../../store/store"
 
 interface StudentData {
     id: string
@@ -34,6 +36,9 @@ export function StudentInfoForm({ studentData, onUpdate }: StudentInfoFormProps)
     const [formData, setFormData] = useState(studentData)
     const [isLoading, setIsLoading] = useState(false)
     const [errors, setErrors] = useState<Record<string, string>>({})
+    const auth = useAppSelector((state: RootState) => state.auth);
+
+    const currentUser = auth.user;
 
     const validateForm = () => {
         const newErrors: Record<string, string> = {}
@@ -104,7 +109,7 @@ export function StudentInfoForm({ studentData, onUpdate }: StudentInfoFormProps)
             onUpdate(formData)
 
             toast(
-                <div className="bg-gradient-to-r from-[#3758FB] to-[#9221FB] text-white border-0 p-4 rounded-md">
+                <div className="bg-green-500 text-white border-0 p-4 rounded-md">
                     <h3 className="font-bold">Profile Updated</h3>
                     <p className="text-sm">Your profile information has been successfully updated</p>
                 </div>
@@ -124,8 +129,8 @@ export function StudentInfoForm({ studentData, onUpdate }: StudentInfoFormProps)
             <div className="flex flex-col items-center space-y-4">
                 <Avatar className="h-32 w-32 border-4 border-gray-100">
                     <AvatarImage src={formData.avatar || "/placeholder.svg"} alt={`${formData.firstName} ${formData.lastName}`} />
-                    <AvatarFallback className="text-2xl bg-gradient-to-r from-[#3758FB] to-[#9221FB] text-white">
-                        {`${formData.firstName} ${formData.lastName}`
+                    <AvatarFallback className="text-2xl bg-red-800 text-white">
+                        {currentUser?.fullName
                             .split(" ")
                             .map((n) => n[0])
                             .join("")}
@@ -143,7 +148,7 @@ export function StudentInfoForm({ studentData, onUpdate }: StudentInfoFormProps)
                     <Button
                         type="button"
                         variant="outline"
-                        className="bg-gradient-to-r from-[#3758FB] to-[#9221FB] text-white border-0 hover:opacity-90"
+                        className="bg-red-800 text-white border-0 hover:opacity-90"
                         asChild
                     >
                         <label htmlFor="avatar-upload" className="cursor-pointer">
@@ -185,7 +190,7 @@ export function StudentInfoForm({ studentData, onUpdate }: StudentInfoFormProps)
                     <Input
                         id="email"
                         type="email"
-                        value={formData.email}
+                        value={currentUser?.email}
                         onChange={(e) => handleInputChange("email", e.target.value)}
                         className={errors.email ? "border-red-500" : ""}
                         placeholder="Enter your email address"
@@ -250,7 +255,7 @@ export function StudentInfoForm({ studentData, onUpdate }: StudentInfoFormProps)
                 <Button
                     type="submit"
                     disabled={isLoading}
-                    className="bg-gradient-to-r from-[#3758FB] to-[#9221FB] text-white border-0 hover:opacity-90 px-8"
+                    className="bg-red-800 text-white border-0 hover:opacity-90 px-8"
                 >
                     {isLoading ? (
                         <>

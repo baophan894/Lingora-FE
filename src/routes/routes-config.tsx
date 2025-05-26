@@ -43,7 +43,7 @@ export const studentRoutes: RouteObject[] = [
         element: <ProfilePage />
       },
       {
-        path: 'edit',
+        path: 'profile-edit',
         element: <EditStudentProfilePage />
       }
     ]

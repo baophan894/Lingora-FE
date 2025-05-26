@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { toast } from "sonner"
 import { Eye, EyeOff, Lock, Loader2 } from "lucide-react"
+import { BASE_URL } from "../../utils/constant-value/constant"
 
 interface PasswordFormData {
     oldPassword: string
@@ -95,11 +96,11 @@ export function ChangePasswordForm() {
         setIsLoading(true);
 
         try {
-            const response = await fetch('/users/change-password', {
+            const response = await fetch(`${BASE_URL}/users/change-password`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 },
                 body: JSON.stringify({
                     old_password: formData.oldPassword,
@@ -289,7 +290,7 @@ export function ChangePasswordForm() {
                 <Button
                     type="submit"
                     disabled={isLoading}
-                    className="bg-gradient-to-r from-[#3758FB] to-[#9221FB] text-white border-0 hover:opacity-90 px-8"
+                    className="bg-red-800 text-white border-0 hover:opacity-90 px-8"
                 >
                     {isLoading ? (
                         <>

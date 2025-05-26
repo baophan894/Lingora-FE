@@ -134,38 +134,38 @@ export default function ProfilePage() {
             </DialogDescription>
           </DialogHeader>
           <div className="mt-4 mb-4" style={{ height: "auto" }}>            <FullCalendar
-              plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-              initialView="timeGridWeek"
-              headerToolbar={{
-                left: 'prev,next today',
-                center: 'title',
-                right: 'dayGridMonth,timeGridWeek,timeGridDay'
-              }}
-              locale="vi"
-              events={events}
-              eventContent={renderEventContent}
-              slotMinTime="07:00:00"
-              slotMaxTime="22:00:00"
-              allDaySlot={false}
-              slotLabelFormat={{
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: false
-              }}
-              eventTimeFormat={{
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: false
-              }}
-              height="auto"
-              buttonText={{
-                today: 'Hôm nay',
-                month: 'Tháng',
-                week: 'Tuần',
-                day: 'Ngày'
-              }}
-              eventClassNames="hover:brightness-95 cursor-pointer"
-            />
+            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+            initialView="timeGridWeek"
+            headerToolbar={{
+              left: 'prev,next today',
+              center: 'title',
+              right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            }}
+            locale="vi"
+            events={events}
+            eventContent={renderEventContent}
+            slotMinTime="07:00:00"
+            slotMaxTime="22:00:00"
+            allDaySlot={false}
+            slotLabelFormat={{
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: false
+            }}
+            eventTimeFormat={{
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: false
+            }}
+            height="auto"
+            buttonText={{
+              today: 'Hôm nay',
+              month: 'Tháng',
+              week: 'Tuần',
+              day: 'Ngày'
+            }}
+            eventClassNames="hover:brightness-95 cursor-pointer"
+          />
           </div>
         </DialogContent>
       </Dialog>
@@ -186,8 +186,8 @@ export default function ProfilePage() {
     )
   }
 
-  return (    
-  <div className="flex flex-col min-h-screen">
+  return (
+    <div className="flex flex-col min-h-screen">
       <main className="flex-1 py-8">
         <div className="container mx-auto max-w-[1400px] px-4 md:px-6">
           <div className="grid gap-8 md:grid-cols-3">
@@ -236,7 +236,7 @@ export default function ProfilePage() {
                     <User className="h-4 w-4" />
                     <span>Tham gia: {user.joinDate}</span>
                   </div>
-                  <Link to="/profile/edit">
+                  <Link to="/student/profile-edit">
                     <Button variant="ghost" size="sm">
                       Chỉnh sửa
                     </Button>
@@ -434,7 +434,7 @@ export default function ProfilePage() {
             </div>
           </div>
         </div>
-      </main>      
+      </main>
     </div>
   )
 }

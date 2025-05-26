@@ -2,6 +2,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
 import { guestRoutes, studentRoutes, teacherRoutes, centerRoutes } from './routes/routes-config';
+import { Toaster } from 'sonner'
+
 import './App.css';
 
 const router = createBrowserRouter([
@@ -14,6 +16,7 @@ const router = createBrowserRouter([
 function App() {
   return (
     <Provider store={store}>
+      <Toaster position='top-right' richColors />
       <RouterProvider router={router} />
     </Provider>
   );
