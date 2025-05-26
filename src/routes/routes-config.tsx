@@ -3,6 +3,7 @@ import { StudentLayout } from '../layouts/student-layout';
 import { TeacherLayout } from '../layouts/teacher-layout';
 import { CenterLayout } from '../layouts/center-layout';
 import AuthenticateGate from '../pages/authentication-gate/authenticate-page';
+import StudentProfilePage from '../pages/user-profile/StudentProfilePage';
 
 export const guestRoutes: RouteObject[] = [
   {
@@ -24,11 +25,11 @@ export const studentRoutes: RouteObject[] = [
     children: [
       {
         path: '',
-      //   element: <HomePage />
+        //   element: <HomePage />
       },
       {
         path: 'profile',
-        element: <div>Student Profile</div>
+        element: <StudentProfilePage />
       }
     ]
   }
