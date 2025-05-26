@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 export interface User {
   id: string
   name: string
@@ -7,7 +6,6 @@ export interface User {
   role: 'admin' | 'teacher' | 'student',
   // Các thuộc tính còn lại
 }
-=======
 export interface User {
   id: string
   email: string
@@ -28,4 +26,3 @@ export interface User {
   }
   status: 'active' | 'locked'
 }
->>>>>>> Stashed changes
