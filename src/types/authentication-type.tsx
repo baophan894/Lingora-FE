@@ -6,15 +6,27 @@ export interface LoginPayload {
 }
 
 export interface RegisterPayload {
-  name: string
+  fullName: string
+  phone_number: string
+  date_of_birth: string // ISO string
   email: string
   password: string
+}
+
+export interface GoogleAuthPayload {
+  accessToken: string    // Token từ Google OAuth
+  profileObj?: {         // Thông tin profile từ Google (optional)
+    email: string
+    name: string
+    imageUrl: string
+    googleId: string
+  }
 }
 
 // Back-end trả về gì thì set ở đây là cái đó
 export interface AuthResponse {
   user: User
-  accessToken: string
+  access_token: string
 }
  
 export interface RegisterResponse {

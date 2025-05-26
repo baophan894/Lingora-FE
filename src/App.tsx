@@ -1,26 +1,21 @@
-import { createBrowserRouter } from 'react-router-dom';
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { guestRoutes, studentRoutes, teacherRoutes, centerRoutes, chatRoutes } from './routes/routes-config';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from './store/store';
+import { guestRoutes, studentRoutes, teacherRoutes, centerRoutes } from './routes/routes-config';
 import './App.css';
-import AuthenticateGate from './pages/authentication-gate/authenticate-page';
-import Chat from './pages/Chat';
 
 const router = createBrowserRouter([
-  ...guestRoutes,
-  ...studentRoutes,
-  ...teacherRoutes,
-  ...centerRoutes,
-  ...chatRoutes
+  ...guestRoutes,    // Includes LandingPage, Login, Reviews with StudentLayout
+  ...studentRoutes,  // Student specific routes with StudentLayout
+  ...teacherRoutes,  // Teacher specific routes with TeacherLayout
+  ...centerRoutes    // Center management routes with CenterLayout
 ]);
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path='/login' element={<AuthenticateGate/>}/> 
-        <Route path='/chat' element={<Chat/>}/>
-      </Routes>
-    </Router>
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   );
 }
 

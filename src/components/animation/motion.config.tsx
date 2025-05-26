@@ -1,7 +1,4 @@
-"use client";
-
 import React from "react";
-
 import { motion, AnimatePresence } from "framer-motion";
 import type { ReactNode } from "react";
 
@@ -193,7 +190,7 @@ export function ScrollReveal({
     <motion.div
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, threshold }}
+      viewport={{ once: true, amount: threshold }}
       transition={{ duration: 0.6, ease: "easeOut" }}
       className={className}
     >
@@ -218,12 +215,9 @@ export function AnimatedCounter({
       transition={{ duration: 0.5 }}
       className={className}
     >
-      <motion.span
-        initial={{ count: 0 }}
-        animate={{ count: value }}
-        transition={{ duration }}
-        children={Math.round(useMotionValue(value)).toLocaleString()}
-      />
+      <span>
+        {Math.round(useMotionValue(value)).toLocaleString()}
+      </span>
     </motion.span>
   );
 }

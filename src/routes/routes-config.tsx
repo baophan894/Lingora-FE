@@ -4,16 +4,27 @@ import { TeacherLayout } from '../layouts/teacher-layout';
 import { CenterLayout } from '../layouts/center-layout';
 import AuthenticateGate from '../pages/authentication-gate/authenticate-page';
 import Chat from '../pages/Chat';
+import LandingPage from '../pages/landing-page/landing-page';
+import ReviewsPage from '../pages/review-page/review-page';
+import ProfilePage from '../pages/profile-page/profile-page';
 
 export const guestRoutes: RouteObject[] = [
+  {
+    path: '/login',
+    element: <AuthenticateGate />
+  },
   {
     path: '/',
     element: <StudentLayout />,
     children: [
       {
-        path: 'login',
-        element: <AuthenticateGate />
+        path: '',
+        element: <LandingPage/>
       },
+      {
+        path: 'reviews',
+        element: <ReviewsPage/>
+      }
     ]
   }
 ];
@@ -36,7 +47,7 @@ export const studentRoutes: RouteObject[] = [
       },
       {
         path: 'profile',
-        element: <div>Student Profile</div>
+        element: <ProfilePage/>
       }
     ]
   }
