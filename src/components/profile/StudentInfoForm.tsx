@@ -25,6 +25,9 @@ interface StudentData {
     avatar: string
     enrollmentDate: string
     level: string
+    coursesCompleted: number
+    totalHours: number
+
 }
 
 interface StudentInfoFormProps {
@@ -36,6 +39,7 @@ export function StudentInfoForm({ studentData, onUpdate }: StudentInfoFormProps)
     const [formData, setFormData] = useState(studentData)
     const [isLoading, setIsLoading] = useState(false)
     const [errors, setErrors] = useState<Record<string, string>>({})
+
     const auth = useAppSelector((state: RootState) => state.auth);
 
     const currentUser = auth.user;

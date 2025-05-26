@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { toast } from "sonner"
-import { Eye, EyeOff, Lock, Loader2 } from "lucide-react"
+import { Eye, EyeOff, Lock, Loader2, Shield, CheckCircle, AlertCircle, Zap } from "lucide-react"
 import { BASE_URL } from "../../utils/constant-value/constant"
 
 interface PasswordFormData {
@@ -28,6 +28,7 @@ export function ChangePasswordForm() {
     })
     const [isLoading, setIsLoading] = useState(false)
     const [errors, setErrors] = useState<Record<string, string>>({})
+    const [touchedFields, setTouchedFields] = useState<Record<string, boolean>>({})
 
     const validateForm = () => {
         const newErrors: Record<string, string> = {};
@@ -61,6 +62,8 @@ export function ChangePasswordForm() {
 
     const handleInputChange = (field: keyof PasswordFormData, value: string) => {
         setFormData((prev) => ({ ...prev, [field]: value }))
+        setTouchedFields((prev) => ({ ...prev, [field]: true }))
+
         // Clear error when user starts typing
         if (errors[field]) {
             setErrors((prev) => ({ ...prev, [field]: "" }))
@@ -72,13 +75,27 @@ export function ChangePasswordForm() {
     }
 
     const getPasswordStrength = (password: string) => {
-        if (password.length === 0) return { strength: 0, label: "" }
-        if (password.length < 6) return { strength: 1, label: "Weak" }
-        if (password.length < 8) return { strength: 2, label: "Fair" }
+        if (password.length === 0) return { strength: 0, label: "", color: "gray" }
+        if (password.length < 6) return { strength: 1, label: "Weak", color: "red" }
+        if (password.length < 8) return { strength: 2, label: "Fair", color: "orange" }
         if (password.length >= 8 && /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
-            return { strength: 4, label: "Strong" }
+            return { strength: 4, label: "Strong", color: "green" }
         }
-        return { strength: 3, label: "Good" }
+        return { strength: 3, label: "Good", color: "yellow" }
+    }
+    const getFieldStatus = (field: string) => {
+        if (!touchedFields[field]) return "default"
+        if (errors[field]) return "error"
+        if (field === "confirmPassword" && formData.confirmPassword && formData.newPassword === formData.confirmPassword) {
+            return "success"
+        }
+        if (field === "newPassword" && formData.newPassword && formData.newPassword.length >= 6) {
+            return "success"
+        }
+        if (field === "oldPassword" && formData.oldPassword) {
+            return "success"
+        }
+        return "default"
     }
 
     const passwordStrength = getPasswordStrength(formData.newPassword)
