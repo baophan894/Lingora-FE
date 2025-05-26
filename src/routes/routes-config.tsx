@@ -3,6 +3,7 @@ import { StudentLayout } from '../layouts/student-layout';
 import { TeacherLayout } from '../layouts/teacher-layout';
 import { CenterLayout } from '../layouts/center-layout';
 import AuthenticateGate from '../pages/authentication-gate/authenticate-page';
+import Chat from '../pages/Chat';
 
 export const guestRoutes: RouteObject[] = [
   {
@@ -16,6 +17,13 @@ export const guestRoutes: RouteObject[] = [
     ]
   }
 ];
+
+export const chatRoutes: RouteObject[] = [
+  {
+    path: '/chat',
+    element: <Chat />
+  }
+]
 
 export const studentRoutes: RouteObject[] = [
   {
