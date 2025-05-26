@@ -6,6 +6,6 @@ export const useAppNavigation = () => {
   return {
     goToHome: () => navigate("/"),
     goToLogin: () => navigate("/login"),
-    gotoSearch: () => navigate("/search"),
+    gotoSearch: () => navigate("/courses-list"),
   };
 };

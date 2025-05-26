@@ -14,7 +14,7 @@ export const guestRoutes: RouteObject[] = [
     element: <AuthenticateGate />
   },
   {
-    path: '/search',
+    path: '/courses-list',
     element: <CoursesPage/>
   },
   {
