@@ -54,7 +54,7 @@ export const signUpWithEmailAndPassword = createAsyncThunk<
   }
 });
 
-// Google Authentication
+// Google 
 export const signInWithGoogle = createAsyncThunk<
   AuthResponse,
   GoogleAuthPayload,

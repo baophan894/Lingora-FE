@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Search,
   ChevronRight,
@@ -35,11 +35,13 @@ import {
   SlideIn,
   AnimatedCounter,
   AnimatedButton,
-  HoverScale,
-  ScaleIn,
 } from "../../components/animation/motion.config";
+import { useAppNavigation } from "../../hooks/app-navigation";
 
 export default function LandingPage() {
+
+  const {gotoSearch} = useAppNavigation();
+
   // Dữ liệu mẫu cho giáo viên
   const featuredTeachers = [
     {
@@ -130,7 +132,7 @@ export default function LandingPage() {
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
                   <Link to="/courses">
                     <AnimatedButton>
-                      <Button className="bg-white text-primary-900 hover:bg-black hover:text-white">
+                      <Button onClick={() => gotoSearch()} className="bg-white text-primary-900 hover:bg-black hover:text-white">
                       Khám phá khóa học
                     </Button>
                     </AnimatedButton>

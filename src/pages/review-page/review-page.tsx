@@ -187,7 +187,7 @@ export default function ReviewsPage() {
                   </div>
 
                   <div className="space-y-2">
-                    {[5, 4, 3, 2, 1].map((rating) => (
+                    {/* {[5, 4, 3, 2, 1].map((rating) => (
                       <div key={rating} className="flex items-center gap-2">
                         <div className="flex items-center min-w-[60px]">
                           <span>{rating}</span>
@@ -203,7 +203,7 @@ export default function ReviewsPage() {
                         </div>
                         <div className="text-sm text-gray-500 min-w-[40px]">{ratingCounts[rating]}</div>
                       </div>
-                    ))}
+                    ))} */}
                   </div>
 
                   <div className="pt-4 border-t">
