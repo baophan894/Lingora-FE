@@ -6,11 +6,16 @@ import AuthenticateGate from '../pages/authentication-gate/authenticate-page';
 import LandingPage from '../pages/landing-page/landing-page';
 import ReviewsPage from '../pages/review-page/review-page';
 import ProfilePage from '../pages/profile-page/profile-page';
+import CoursesPage from '../pages/search-course-page/search-course-page';
 
 export const guestRoutes: RouteObject[] = [
   {
     path: '/login',
     element: <AuthenticateGate />
+  },
+  {
+    path: '/search',
+    element: <CoursesPage/>
   },
   {
     path: '/',

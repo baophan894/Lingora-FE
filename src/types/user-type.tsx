@@ -1,14 +1,3 @@
-<<<<<<< Updated upstream
-export interface User {
-  id: string
-  name: string
-  email: string
-  password: string
-  role: 'admin' | 'teacher' | 'student',
-  // Các thuộc tính còn lại
-}
-=======
->>>>>>> Stashed changes
 export interface User {
   id: string
   email: string
