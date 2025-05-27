@@ -18,3 +18,4 @@ export interface User {
   }
   status: 'active' | 'locked'
 }
+

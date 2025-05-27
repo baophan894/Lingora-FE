@@ -7,6 +7,7 @@ import Chat from '../pages/Chat';
 import LandingPage from '../pages/landing-page/landing-page';
 import ReviewsPage from '../pages/review-page/review-page';
 import ProfilePage from '../pages/profile-page/profile-page';
+import EditStudentProfilePage from '../pages/profile-page/edit-student-profile-page';
 import CoursesPage from '../pages/search-course-page/search-course-page';
 
 export const guestRoutes: RouteObject[] = [
@@ -24,11 +25,11 @@ export const guestRoutes: RouteObject[] = [
     children: [
       {
         path: '',
-        element: <LandingPage/>
+        element: <LandingPage />
       },
       {
         path: 'reviews',
-        element: <ReviewsPage/>
+        element: <ReviewsPage />
       }
     ]
   }
@@ -48,11 +49,15 @@ export const studentRoutes: RouteObject[] = [
     children: [
       {
         path: '',
-      //   element: <HomePage />
+        //   element: <HomePage />
       },
       {
         path: 'profile',
-        element: <ProfilePage/>
+        element: <ProfilePage />
+      },
+      {
+        path: 'profile-edit',
+        element: <EditStudentProfilePage />
       }
     ]
   }
