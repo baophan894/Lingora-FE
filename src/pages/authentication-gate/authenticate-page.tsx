@@ -111,8 +111,8 @@ export default function AuthPage() {
         if (result) {
           setTimeout(() => {
             CustomSuccessToast("Đăng nhập thành công!");
+            navigate("/");
           }, 1000);
-          navigate("/");
         }
       } else {
         const result = await dispatch(

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { Chat, ChatState, Message } from "../../types/chat";
+import type { Chat, ChatState } from "../../types/chat";
 import {
   fetchChats,
   createChat,
@@ -20,13 +20,21 @@ const chatSlice = createSlice({
   initialState,
   reducers: {
     setCurrentChat: (state, action: PayloadAction<Chat>) => {
-      state.currentChat = action.payload;
+      state.currentChat = {
+      ...action.payload,
+      messages: action.payload.messages || [],
+    };
     },
     clearCurrentChat: (state) => {
       state.currentChat = null;
     },
-    addMessage: (state, action: PayloadAction<Message>) => {
-      state.currentChat?.messages.push(action.payload);
+    addMessage: (state, action) => {
+      const exists = state.currentChat?.messages.some(
+        (msg) => msg._id === action.payload._id
+      );
+      if (!exists) {
+        state.currentChat?.messages.push(action.payload);
+      }
     },
     clearMessages: (state) => {
       if (state.currentChat) {

@@ -14,8 +14,8 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-  user: null,
-  token: null,
+  user: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user") || "{}") : null,
+  token:  localStorage.getItem("token") || null,
   loading: false,
   error: null,
 };
@@ -49,7 +49,7 @@ const authSlice = createSlice({
         localStorage.setItem("token", action.payload.access_token);
       })
 
-      .addCase(signUpWithEmailAndPassword.fulfilled, (state, action) => {
+      .addCase(signUpWithEmailAndPassword.fulfilled, (state) => {
         state.loading = false;
       })
 
