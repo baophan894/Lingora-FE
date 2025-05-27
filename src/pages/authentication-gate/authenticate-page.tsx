@@ -1,8 +1,12 @@
 import React, { useState } from "react";
-import { Eye, EyeOff, Mail, Lock, User, ArrowRight } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, User, ArrowRight, Phone } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import type { RootState } from "../../store/store";
-import { signInWithEmailAndPassword, signInWithGoogle, signUpWithEmailAndPassword } from "../../features/authentication/authThunk";
+import {
+  signInWithEmailAndPassword,
+  signInWithGoogle,
+  signUpWithEmailAndPassword,
+} from "../../features/authentication/authThunk";
 import { Checkbox } from "../../components/ui/checkbox";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -13,7 +17,6 @@ import {
 } from "../../components/toast/notificiation-toast";
 import { AnimatedButton } from "../../components/animation/motion.config";
 import { Button } from "../../components/ui/button";
-
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -101,28 +104,31 @@ export default function AuthPage() {
 
     setIsLoading(true);
     try {
-      if (isLogin) {        const result = await dispatch(
+      if (isLogin) {
+        const result = await dispatch(
           signInWithEmailAndPassword({
             email: formData.email,
             password: formData.password,
           })
         ).unwrap();
-        
+
         if (result) {
           const { access_token, user } = result;
-          
+
           if (rememberMe) {
             // Nếu người dùng chọn "Ghi nhớ", lưu vào cookies với thời hạn 30 ngày
             const d = new Date();
-            d.setTime(d.getTime() + (30 * 24 * 60 * 60 * 1000)); // 30 days
+            d.setTime(d.getTime() + 30 * 24 * 60 * 60 * 1000); // 30 days
             document.cookie = `token=${access_token}; expires=${d.toUTCString()}; path=/`;
-            document.cookie = `user=${JSON.stringify(user)}; expires=${d.toUTCString()}; path=/`;
+            document.cookie = `user=${JSON.stringify(
+              user
+            )}; expires=${d.toUTCString()}; path=/`;
           } else {
             // Nếu không, lưu vào sessionStorage
             sessionStorage.setItem("token", access_token);
             sessionStorage.setItem("user", JSON.stringify(user));
           }
-          
+
           CustomSuccessToast("Đăng nhập thành công!");
           navigate("/");
         }
@@ -151,25 +157,27 @@ export default function AuthPage() {
 
   const handleGoogleLogin = async () => {
     try {
+      const avatar =
+        "https://res.cloudinary.com/dfvy81evi/image/upload/v1748061418/Lingora_1_c7cbws.png"; // Placeholder avatar URL
 
-      const avatar = "https://res.cloudinary.com/dfvy81evi/image/upload/v1748061418/Lingora_1_c7cbws.png"; // Placeholder avatar URL
+      const result = await dispatch(signInWithGoogle({ avatar })).unwrap();
 
-      const result = await dispatch(signInWithGoogle({avatar})).unwrap();
-      
       if (result) {
         const { access_token, user } = result;
         if (rememberMe) {
           // Save to cookies if remember me is checked
           const d = new Date();
-          d.setTime(d.getTime() + (30 * 24 * 60 * 60 * 1000));
+          d.setTime(d.getTime() + 30 * 24 * 60 * 60 * 1000);
           document.cookie = `token=${access_token}; expires=${d.toUTCString()}; path=/`;
-          document.cookie = `user=${JSON.stringify(user)}; expires=${d.toUTCString()}; path=/`;
+          document.cookie = `user=${JSON.stringify(
+            user
+          )}; expires=${d.toUTCString()}; path=/`;
         } else {
-          // Save to sessionStorage if remember me is not checked
-          sessionStorage.setItem("token", access_token);
-          sessionStorage.setItem("user", JSON.stringify(user));
+          // Save to localStorage if remember me is not checked
+          localStorage.setItem("token", access_token);
+          localStorage.setItem("user", JSON.stringify(user));
         }
-        
+
         CustomSuccessToast("Đăng nhập Google thành công!");
         navigate("/");
       }
@@ -189,7 +197,6 @@ export default function AuthPage() {
       confirmPassword: "",
     });
   };
-
 
   return (
     <div className="h-screen w-screen fixed inset-0 overflow-hidden">
@@ -262,7 +269,6 @@ export default function AuthPage() {
                     </div>
                   </div>
                 )}
-
                 {/* Date of Birth Field (only for register) */}
                 {!isLogin && (
                   <div className="space-y-2 text-left">
@@ -281,17 +287,17 @@ export default function AuthPage() {
                     </div>
                   </div>
                 )}
-
-                {/* Phone Number Field (only for register) */}
+                
                 {!isLogin && (
                   <div className="space-y-2 text-left">
+                    <Phone className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <label className="block text-sm font-medium text-gray-700 text-left">
                       Số điện thoại
                     </label>
                     <div className="relative">
                       <input
                         type="tel"
-                        name="phoneNumber"
+                        name="phone_number" 
                         value={formData.phone_number}
                         onChange={handleInputChange}
                         className="w-full pl-5 pr-4 py-2 text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white shadow-sm"
@@ -301,11 +307,8 @@ export default function AuthPage() {
                     </div>
                   </div>
                 )}
-
-                {/* Email Field */}
+                
                 <div className="space-y-2 text-left">
-                  {" "}
-                  {/* Add text-left here */}
                   <label className="block text-sm font-medium text-gray-700 text-left">
                     Email
                   </label>
@@ -322,11 +325,8 @@ export default function AuthPage() {
                     />
                   </div>
                 </div>
-
-                {/* Password Field */}
+                
                 <div className="space-y-2 text-left">
-                  {" "}
-                  {/* Add text-left here */}
                   <label className="block text-sm font-medium text-gray-700 text-left">
                     Mật khẩu
                   </label>
@@ -354,12 +354,9 @@ export default function AuthPage() {
                     </button>
                   </div>
                 </div>
-
                 {/* Confirm Password Field (only for register) */}
                 {!isLogin && (
                   <div className="space-y-2 text-left">
-                    {" "}
-                    {/* Add text-left here */}
                     <label className="block text-sm font-medium text-gray-700 text-left">
                       Xác nhận mật khẩu
                     </label>
@@ -370,7 +367,7 @@ export default function AuthPage() {
                         name="confirmPassword"
                         value={formData.confirmPassword}
                         onChange={handleInputChange}
-                        className="w-full pl-12 pr-4 py-2 text-base border-gray-300 rounded-xl focus:ring-2 focus:text-primary-400 focus:border-transparent transition-all duration-200 bg-white shadow-sm"
+                        className="w-full pl-12 pr-4 py-2 text-base border-gray-300 rounded-xl focus:ring-2 focus:border-transparent transition-all duration-200 bg-white shadow-sm"
                         placeholder="Nhập lại mật khẩu"
                         required={!isLogin}
                       />
@@ -390,14 +387,16 @@ export default function AuthPage() {
                     </div>
                   </div>
                 )}
-
-                {/* Remember Me / Forgot Password (only for login) */}                {isLogin && (
+                {/* Remember Me / Forgot Password (only for login) */}{" "}
+                {isLogin && (
                   <div className="flex items-center justify-between">
                     <div>
-                      <Checkbox 
-                        id="terms" 
+                      <Checkbox
+                        id="terms"
                         checked={rememberMe}
-                        onCheckedChange={(checked) => setRememberMe(checked === true)}
+                        onCheckedChange={(checked) =>
+                          setRememberMe(checked === true)
+                        }
                       />
                       <label
                         htmlFor="terms"
@@ -414,7 +413,6 @@ export default function AuthPage() {
                     </button>
                   </div>
                 )}
-
                 {/* Submit Button */}
                 <button
                   onClick={handleSubmit}
@@ -429,11 +427,12 @@ export default function AuthPage() {
                       <ArrowRight className="w-5 h-5" />
                     </>
                   )}
-                </button>                
+                </button>
                 <AnimatedButton>
-                  <Button  
+                  <Button
                     onClick={() => navigate("/")}
-                    className="w-full bg-gradient-to-r from-red-800 to-red-400 text-white py-4 px-6 rounded-xl text-base font-mediu focus:ring-4 focus:ring-blue-200 transition-all duration-200 flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed">
+                    className="w-full bg-gradient-to-r from-red-800 to-red-400 text-white py-4 px-6 rounded-xl text-base font-mediu focus:ring-4 focus:ring-blue-200 transition-all duration-200 flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
                     Xem trước
                   </Button>
                 </AnimatedButton>
@@ -461,9 +460,12 @@ export default function AuthPage() {
                   </div>
                 </div>
 
-                <div className="mt-6 grid grid-cols-2 gap-4">                  <button 
+                <div className="mt-6 grid grid-cols-2 gap-4">
+                  {" "}
+                  <button
                     onClick={handleGoogleLogin}
-                    className="w-full transform transition-transform duration-300 hover:scale-105 inline-flex justify-center py-3 px-4 border border-gray-300 rounded-xl shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                    className="w-full transform transition-transform duration-300 hover:scale-105 inline-flex justify-center py-3 px-4 border border-gray-300 rounded-xl shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                  >
                     <svg className="w-5 h-5" viewBox="0 0 24 24">
                       <path
                         fill="#4285F4"
@@ -484,8 +486,7 @@ export default function AuthPage() {
                     </svg>
                     <span className="ml-2">Google</span>
                   </button>
-
-                  <button className="transform transition-transform duration-300 hover:scale-105 w-full inline-flex justify-center py-3 px-4 border border-gray-300 rounded-xl shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                  <button className="transform transition-transform duration-300 hover:scale-105 w-full inline-flex justify-center py-3 px-4 border border-gray-300 rounded-xl shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
                     <svg className="w-5 h-5" fill="#1877F2" viewBox="0 0 24 24">
                       <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
                     </svg>

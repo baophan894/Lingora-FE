@@ -1,10 +1,18 @@
-import { Link, useNavigate } from 'react-router-dom'
-import { Button } from '../ui/button'
-import { Search } from 'lucide-react'
-import { AnimatedButton } from '../animation/motion.config'
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { logout } from '../../features/authentication/authSlice'
-import type { RootState } from '../../store/store'
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "../ui/button";
+import { Search, User, LogOut, BookOpen } from "lucide-react";
+import { AnimatedButton } from "../animation/motion.config";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { logout } from "../../features/authentication/authSlice";
+import type { RootState } from "../../store/store";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from "../../components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 export const NavbarComponent = () => {
   const dispatch = useAppDispatch();
@@ -13,8 +21,8 @@ export const NavbarComponent = () => {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate('/login');
-  };  
+    navigate("/login");
+  };
 
   console.log("Thong tin user tu navbar", JSON.stringify(auth.user, null, 2));
 
@@ -73,30 +81,56 @@ export const NavbarComponent = () => {
             <Button variant="ghost" size="icon">
               <Search className="h-5 w-5" />
               <span className="sr-only">Tìm kiếm</span>
-            </Button>{" "}
-            
+            </Button>
+
             {auth.user ? (
-              <>
-                <Link to="/student/profile">
-                  <AnimatedButton>
-                    <Button variant="outline" className="hidden md:flex hover:bg-black hover:text-white">
-                      {auth.user.fullName || 'Tài khoản'}
-                    </Button>
-                  </AnimatedButton>
-                </Link>
-                <AnimatedButton>
-                  <Button 
-                    onClick={handleLogout}
-                    className="bg-primary-800 text-white hover:bg-primary-500">
-                    Đăng xuất
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="md:flex bg-white text-primary-800 hover:bg-primary-800 hover:text-white shadow-md"
+                  >
+                    <Avatar className="mr-2 h-7 w-7">
+                      <AvatarImage
+                        src="https://github.com/shadcn.png"
+                        alt="@shadcn"
+                      />
+                      <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
+                    {auth.user.fullName || "Tài khoản"}
                   </Button>
-                </AnimatedButton>
-              </>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  align="end"
+                  className="w-48 bg-white shadow-md border border-gray-200 rounded-md"
+                >
+                  <DropdownMenuItem
+                    asChild
+                    className="text-black hover:text-primary-800 cursor-pointer"
+                  >
+                    <Link to="/student/profile" className="flex items-center">
+                      <User className="mr-2 h-4 w-4" />
+                      <span>Tài khoản</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator className="bg-gray-200 m-1" />
+                  <DropdownMenuItem
+                    onClick={handleLogout}
+                    className="text-black hover:text-primary-800 cursor-pointer"
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Đăng xuất</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             ) : (
               <>
                 <Link to="/login">
                   <AnimatedButton>
-                    <Button variant="outline" className="hidden md:flex hover:bg-black hover:text-white">
+                    <Button
+                      variant="outline"
+                      className="hidden md:flex hover:bg-black hover:text-white"
+                    >
                       Đăng nhập
                     </Button>
                   </AnimatedButton>
@@ -114,5 +148,5 @@ export const NavbarComponent = () => {
         </div>
       </header>
     </>
-  )
-}
+  );
+};
