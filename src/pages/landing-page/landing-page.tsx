@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Search,
   ChevronRight,
@@ -35,11 +35,13 @@ import {
   SlideIn,
   AnimatedCounter,
   AnimatedButton,
-  HoverScale,
-  ScaleIn,
 } from "../../components/animation/motion.config";
+import { useAppNavigation } from "../../hooks/app-navigation";
 
 export default function LandingPage() {
+
+  const {gotoSearch} = useAppNavigation();
+
   // Dữ liệu mẫu cho giáo viên
   const featuredTeachers = [
     {
@@ -120,17 +122,17 @@ export default function LandingPage() {
         <section className="w-full py-12 md:py-24 lg:py-32 bg-primary-800 text-white">
           <div className="container mx-auto px-4 md:px-6 max-w-[1400px]">
             <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center justify-between">              <SlideIn direction="left" className="space-y-4">
-              <h1 className="text-start text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                Khám phá ngoại ngữ cùng Lingora
-              </h1>
-              <p className="text-start max-w-[600px] text-gray-300 md:text-xl">
-                Trung tâm ngoại ngữ hàng đầu với đội ngũ giáo viên chất lượng
-                cao và phương pháp giảng dạy hiện đại.
-              </p>
-              <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                <Link to="/courses">
-                  <AnimatedButton>
-                    <Button className="bg-white text-primary-900 hover:bg-black hover:text-white">
+                <h1 className="text-start text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
+                  Khám phá ngoại ngữ cùng Lingora
+                </h1>
+                <p className="text-start max-w-[600px] text-gray-300 md:text-xl">
+                  Trung tâm ngoại ngữ hàng đầu với đội ngũ giáo viên chất lượng
+                  cao và phương pháp giảng dạy hiện đại.
+                </p>
+                <div className="flex flex-col gap-2 min-[400px]:flex-row">
+                  <Link to="/courses">
+                    <AnimatedButton>
+                      <Button onClick={() => gotoSearch()} className="bg-white text-primary-900 hover:bg-black hover:text-white">
                       Khám phá khóa học
                     </Button>
                   </AnimatedButton>
