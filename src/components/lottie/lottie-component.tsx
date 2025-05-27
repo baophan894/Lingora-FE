@@ -13,9 +13,9 @@ const LottieComponent = () => {
 
   return (
     <div className='flex w-full'>  {/* Set the size of the animation */}
-      <Lottie 
-         style={{height: 300, width: 500,}}
-         options={defaultOptions} 
+      <Lottie
+        style={{ height: 300, width: 500, }}
+        options={defaultOptions}
       />
     </div>
   );

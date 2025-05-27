@@ -27,11 +27,11 @@ import {
 import { Badge } from "../../components/ui/badge";
 import LottieComponent from "../../components/lottie/lottie-component";
 
-import { 
-  FadeIn, 
-  ScrollReveal, 
-  FadeInStagger, 
-  FadeInStaggerItem, 
+import {
+  FadeIn,
+  ScrollReveal,
+  FadeInStagger,
+  FadeInStaggerItem,
   SlideIn,
   AnimatedCounter,
   AnimatedButton,
@@ -135,22 +135,22 @@ export default function LandingPage() {
                       <Button onClick={() => gotoSearch()} className="bg-white text-primary-900 hover:bg-black hover:text-white">
                       Khám phá khóa học
                     </Button>
-                    </AnimatedButton>
-                  </Link>
-                  <Link to="/contact">
-                    <AnimatedButton>
-                      <Button
+                  </AnimatedButton>
+                </Link>
+                <Link to="/contact">
+                  <AnimatedButton>
+                    <Button
                       variant="outline"
                       className="border-white text-white hover:bg-white/10"
                     >
                       Liên hệ tư vấn
                     </Button>
-                    </AnimatedButton>
-                  </Link>
-                </div>
-              </SlideIn>
+                  </AnimatedButton>
+                </Link>
+              </div>
+            </SlideIn>
               <div className="w-80 h-70 ml-50">
-                <LottieComponent/>
+                <LottieComponent />
               </div>
             </div>
           </div>
@@ -158,33 +158,33 @@ export default function LandingPage() {
         {/* Thống kê */}
         <section className="w-full py-12 md:py-16 lg:py-20">
           <div className="container mx-auto px-4 md:px-6 max-w-[1400px]">            <FadeInStagger>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                <FadeInStaggerItem className="space-y-2">
-                  <h3 className="text-3xl font-bold text-navy-900">
-                    <AnimatedCounter value={10} />+
-                  </h3>
-                  <p className="text-gray-500">Năm kinh nghiệm</p>
-                </FadeInStaggerItem>
-                <FadeInStaggerItem className="space-y-2">
-                  <h3 className="text-3xl font-bold text-navy-900">
-                    <AnimatedCounter value={50} />+
-                  </h3>
-                  <p className="text-gray-500">Giáo viên chuyên môn cao</p>
-                </FadeInStaggerItem>
-                <FadeInStaggerItem className="space-y-2">
-                  <h3 className="text-3xl font-bold text-navy-900">
-                    <AnimatedCounter value={100} />+
-                  </h3>
-                  <p className="text-gray-500">Khóa học đa dạng</p>
-                </FadeInStaggerItem>
-                <FadeInStaggerItem className="space-y-2">
-                  <h3 className="text-3xl font-bold text-navy-900">
-                    <AnimatedCounter value={10000} />+
-                  </h3>
-                  <p className="text-gray-500">Học viên thành công</p>
-                </FadeInStaggerItem>
-              </div>
-            </FadeInStagger>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+              <FadeInStaggerItem className="space-y-2">
+                <h3 className="text-3xl font-bold text-navy-900">
+                  <AnimatedCounter value={10} />+
+                </h3>
+                <p className="text-gray-500">Năm kinh nghiệm</p>
+              </FadeInStaggerItem>
+              <FadeInStaggerItem className="space-y-2">
+                <h3 className="text-3xl font-bold text-navy-900">
+                  <AnimatedCounter value={50} />+
+                </h3>
+                <p className="text-gray-500">Giáo viên chuyên môn cao</p>
+              </FadeInStaggerItem>
+              <FadeInStaggerItem className="space-y-2">
+                <h3 className="text-3xl font-bold text-navy-900">
+                  <AnimatedCounter value={100} />+
+                </h3>
+                <p className="text-gray-500">Khóa học đa dạng</p>
+              </FadeInStaggerItem>
+              <FadeInStaggerItem className="space-y-2">
+                <h3 className="text-3xl font-bold text-navy-900">
+                  <AnimatedCounter value={10000} />+
+                </h3>
+                <p className="text-gray-500">Học viên thành công</p>
+              </FadeInStaggerItem>
+            </div>
+          </FadeInStagger>
           </div>
         </section>
         {/* Giáo viên nổi bật */}
@@ -203,81 +203,80 @@ export default function LandingPage() {
               <Link to="/teachers">
                 <AnimatedButton>
                   <Button variant="outline" className="flex items-center gap-1">
-                  Xem tất cả <ChevronRight className="h-4 w-4" />
-                </Button>
+                    Xem tất cả <ChevronRight className="h-4 w-4" />
+                  </Button>
                 </AnimatedButton>
               </Link>
             </div>{" "}
             <FadeIn>
               <Carousel
-              opts={{
-                align: "start",
-                loop: true,
-              }}
-              className="w-full"
-            >
-              <CarouselContent className="-ml-2 md:-ml-4 bg-white">
-                {featuredTeachers.map((teacher) => (
-                  <CarouselItem
-                    key={teacher.id}
-                    className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3"
-                  >
-                    <Card className="overflow-hidden bg-white border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 m-3">
-                      <div className="aspect-[4/5] w-full overflow-hidden">
-                        <img
-                          src={teacher.image || "/placeholder.svg"}
-                          alt={teacher.name}
-                          className="object-cover w-full h-full transition-transform hover:scale-105"
-                        />
-                      </div>
-                      <CardHeader>
-                        <CardTitle className="text-start">
-                          {teacher.name}
-                        </CardTitle>
-                        <CardDescription className="text-start">
-                          {teacher.role}
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="flex items-center gap-2 text-sm text-gray-500">
-                          <GraduationCap className="h-4 w-4" />
-                          <span>{teacher.experience}</span>
+                opts={{
+                  align: "start",
+                  loop: true,
+                }}
+                className="w-full"
+              >
+                <CarouselContent className="-ml-2 md:-ml-4 bg-white">
+                  {featuredTeachers.map((teacher) => (
+                    <CarouselItem
+                      key={teacher.id}
+                      className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3"
+                    >
+                      <Card className="overflow-hidden bg-white border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 m-3">
+                        <div className="aspect-[4/5] w-full overflow-hidden">
+                          <img
+                            src={teacher.image || "/placeholder.svg"}
+                            alt={teacher.name}
+                            className="object-cover w-full h-full transition-transform hover:scale-105"
+                          />
                         </div>
-                        <div className="flex items-center gap-2 mt-2">
-                          <div className="flex">
-                            {[...Array(5)].map((_, i) => (
-                              <Star
-                                key={i}
-                                className={`h-4 w-4 ${
-                                  i < Math.floor(teacher.rating)
-                                    ? "text-yellow-500 fill-yellow-500"
-                                    : "text-gray-300"
-                                }`}
-                              />
-                            ))}
+                        <CardHeader>
+                          <CardTitle className="text-start">
+                            {teacher.name}
+                          </CardTitle>
+                          <CardDescription className="text-start">
+                            {teacher.role}
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="flex items-center gap-2 text-sm text-gray-500">
+                            <GraduationCap className="h-4 w-4" />
+                            <span>{teacher.experience}</span>
                           </div>
-                          <span className="text-sm font-medium">
-                            {teacher.rating}/5
-                          </span>
-                        </div>
-                      </CardContent>
-                      <CardFooter>
-                        <Link to={`/teachers/${teacher.id}`} className="w-full">
-                          <Button
-                            variant="outline"
-                            className="w-full bg-primary-800 text-white hover:bg-primary-700"
-                          >
-                            Xem chi tiết
-                          </Button>
-                        </Link>
-                      </CardFooter>
-                    </Card>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious className="hidden md:flex" />
-              <CarouselNext className="hidden md:flex" />
-            </Carousel>
+                          <div className="flex items-center gap-2 mt-2">
+                            <div className="flex">
+                              {[...Array(5)].map((_, i) => (
+                                <Star
+                                  key={i}
+                                  className={`h-4 w-4 ${i < Math.floor(teacher.rating)
+                                      ? "text-yellow-500 fill-yellow-500"
+                                      : "text-gray-300"
+                                    }`}
+                                />
+                              ))}
+                            </div>
+                            <span className="text-sm font-medium">
+                              {teacher.rating}/5
+                            </span>
+                          </div>
+                        </CardContent>
+                        <CardFooter>
+                          <Link to={`/teachers/${teacher.id}`} className="w-full">
+                            <Button
+                              variant="outline"
+                              className="w-full bg-primary-800 text-white hover:bg-primary-700"
+                            >
+                              Xem chi tiết
+                            </Button>
+                          </Link>
+                        </CardFooter>
+                      </Card>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious className="hidden md:flex" />
+                <CarouselNext className="hidden md:flex" />
+              </Carousel>
             </FadeIn>
           </div>
         </section>
@@ -297,82 +296,82 @@ export default function LandingPage() {
               <Link to="/courses">
                 <AnimatedButton>
                   <Button variant="outline" className="flex items-center gap-1">
-                  Xem tất cả <ChevronRight className="h-4 w-4" />
-                </Button>
+                    Xem tất cả <ChevronRight className="h-4 w-4" />
+                  </Button>
                 </AnimatedButton>
               </Link>
             </div>              <ScrollReveal>
               <FadeInStaggerItem>
                 <Carousel
-                opts={{
-                  align: "start",
-                  loop: true,
-                }}
-                className="w-full"
-              >
-                <CarouselContent className="-ml-2 md:-ml-4">                {featuredCourses.map((course) => (
+                  opts={{
+                    align: "start",
+                    loop: true,
+                  }}
+                  className="w-full"
+                >
+                  <CarouselContent className="-ml-2 md:-ml-4">                {featuredCourses.map((course) => (
                     <CarouselItem
                       key={course.id}
                       className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3"
                     >
-                    <Card className="overflow-hidden bg-white border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 m-3">
-                      <div className="aspect-[4/3] w-full overflow-hidden">
-                        <img
-                          src={course.image || "/placeholder.svg"}
-                          alt={course.title}
-                          className="object-cover w-full h-full transition-transform hover:scale-105"
-                        />
-                      </div>
-                      <CardHeader>
-                        <div className="flex justify-between items-start">
+                      <Card className="overflow-hidden bg-white border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 m-3">
+                        <div className="aspect-[4/3] w-full overflow-hidden">
+                          <img
+                            src={course.image || "/placeholder.svg"}
+                            alt={course.title}
+                            className="object-cover w-full h-full transition-transform hover:scale-105"
+                          />
+                        </div>
+                        <CardHeader>
+                          <div className="flex justify-between items-start">
+                            {" "}
+                            <Badge
+                              variant="outline"
+                              className="text-start bg-primary text-white hover:bg-primary/90"
+                            >
+                              {course.level}
+                            </Badge>
+                            <div className="flex items-center gap-1">
+                              <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
+                              <span className="text-start text-sm font-medium">
+                                {course.rating}
+                              </span>
+                            </div>
+                          </div>
+                          <CardTitle className="text-start mt-2">
+                            {course.title}
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="flex justify-between items-center gap-4 text-sm text-gray-500">
+                            <div className="flex justify-between items-center gap-1">
+                              <BookOpen className="h-4 w-4" />
+                              <span>{course.duration}</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <Users className="h-4 w-4" />
+                              <span>{course.students} học viên</span>
+                            </div>
+                          </div>
+                        </CardContent>
+                        <CardFooter className="flex justify-between">
                           {" "}
-                          <Badge
-                            variant="outline"
-                            className="text-start bg-primary text-white hover:bg-primary/90"
-                          >
-                            {course.level}
-                          </Badge>
-                          <div className="flex items-center gap-1">
-                            <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
-                            <span className="text-start text-sm font-medium">
-                              {course.rating}
-                            </span>
-                          </div>
-                        </div>
-                        <CardTitle className="text-start mt-2">
-                          {course.title}
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="flex justify-between items-center gap-4 text-sm text-gray-500">
-                          <div className="flex justify-between items-center gap-1">
-                            <BookOpen className="h-4 w-4" />
-                            <span>{course.duration}</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <Users className="h-4 w-4" />
-                            <span>{course.students} học viên</span>
-                          </div>
-                        </div>
-                      </CardContent>
-                      <CardFooter className="flex justify-between">
-                        {" "}
-                        <Link to={`/courses/${course.id}`} className="w-full">
-                          <Button
-                            variant="outline"
-                            className="w-full bg-primary-800 text-white hover:bg-primary-700"
-                          >
-                            Xem chi tiết
-                          </Button>
-                        </Link>{" "}
-                      </CardFooter>
-                    </Card>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious className="hidden md:flex" />
-              <CarouselNext className="hidden md:flex" />
-            </Carousel>
+                          <Link to={`/courses/${course.id}`} className="w-full">
+                            <Button
+                              variant="outline"
+                              className="w-full bg-primary-800 text-white hover:bg-primary-700"
+                            >
+                              Xem chi tiết
+                            </Button>
+                          </Link>{" "}
+                        </CardFooter>
+                      </Card>
+                    </CarouselItem>
+                  ))}
+                  </CarouselContent>
+                  <CarouselPrevious className="hidden md:flex" />
+                  <CarouselNext className="hidden md:flex" />
+                </Carousel>
               </FadeInStaggerItem>
             </ScrollReveal>
           </div>
@@ -416,38 +415,38 @@ export default function LandingPage() {
               ].map((review, index) => (
                 <SlideIn>
                   <Card
-                  key={index}
-                  className="h-full border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300"
-                >
-                  <CardHeader>
-                    <div className="flex items-center gap-4">
-                      <img
-                        src={review.avatar || "/placeholder.svg"}
-                        alt={review.name}
-                        className="rounded-full w-12 h-12 object-cover"
-                      />
-                      <div>
-                        <CardTitle className="text-base">
-                          {review.name}
-                        </CardTitle>
-                        <CardDescription>{review.course}</CardDescription>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600">"{review.content}"</p>
-                  </CardContent>
-                  <CardFooter>
-                    <div className="flex">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className="h-4 w-4 text-yellow-500 fill-yellow-500"
+                    key={index}
+                    className="h-full border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300"
+                  >
+                    <CardHeader>
+                      <div className="flex items-center gap-4">
+                        <img
+                          src={review.avatar || "/placeholder.svg"}
+                          alt={review.name}
+                          className="rounded-full w-12 h-12 object-cover"
                         />
-                      ))}
-                    </div>
-                  </CardFooter>
-                </Card>
+                        <div>
+                          <CardTitle className="text-base">
+                            {review.name}
+                          </CardTitle>
+                          <CardDescription>{review.course}</CardDescription>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-gray-600">"{review.content}"</p>
+                    </CardContent>
+                    <CardFooter>
+                      <div className="flex">
+                        {[...Array(5)].map((_, i) => (
+                          <Star
+                            key={i}
+                            className="h-4 w-4 text-yellow-500 fill-yellow-500"
+                          />
+                        ))}
+                      </div>
+                    </CardFooter>
+                  </Card>
                 </SlideIn>
               ))}
             </div>
@@ -456,11 +455,11 @@ export default function LandingPage() {
               <Link to="/reviews">
                 <AnimatedButton>
                   <Button
-                  variant="outline"
-                  className="flex items-center gap-1 mx-auto"
-                >
-                  Xem tất cả đánh giá <ChevronRight className="h-4 w-4" />
-                </Button>
+                    variant="outline"
+                    className="flex items-center gap-1 mx-auto"
+                  >
+                    Xem tất cả đánh giá <ChevronRight className="h-4 w-4" />
+                  </Button>
                 </AnimatedButton>
               </Link>
             </div>

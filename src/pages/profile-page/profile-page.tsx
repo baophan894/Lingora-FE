@@ -135,38 +135,38 @@ export default function ProfilePage() {
             </DialogDescription>
           </DialogHeader>
           <div className="mt-4 mb-4" style={{ height: "auto" }}>            <FullCalendar
-              plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-              initialView="timeGridWeek"
-              headerToolbar={{
-                left: 'prev,next today',
-                center: 'title',
-                right: 'dayGridMonth,timeGridWeek,timeGridDay'
-              }}
-              locale="vi"
-              events={events}
-              eventContent={renderEventContent}
-              slotMinTime="07:00:00"
-              slotMaxTime="22:00:00"
-              allDaySlot={false}
-              slotLabelFormat={{
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: false
-              }}
-              eventTimeFormat={{
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: false
-              }}
-              height="auto"
-              buttonText={{
-                today: 'Hôm nay',
-                month: 'Tháng',
-                week: 'Tuần',
-                day: 'Ngày'
-              }}
-              eventClassNames="hover:brightness-95 cursor-pointer"
-            />
+            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+            initialView="timeGridWeek"
+            headerToolbar={{
+              left: 'prev,next today',
+              center: 'title',
+              right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            }}
+            locale="vi"
+            events={events}
+            eventContent={renderEventContent}
+            slotMinTime="07:00:00"
+            slotMaxTime="22:00:00"
+            allDaySlot={false}
+            slotLabelFormat={{
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: false
+            }}
+            eventTimeFormat={{
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: false
+            }}
+            height="auto"
+            buttonText={{
+              today: 'Hôm nay',
+              month: 'Tháng',
+              week: 'Tuần',
+              day: 'Ngày'
+            }}
+            eventClassNames="hover:brightness-95 cursor-pointer"
+          />
           </div>
         </DialogContent>
       </Dialog>
@@ -187,8 +187,8 @@ export default function ProfilePage() {
     )
   }
 
-  return (    
-  <div className="flex flex-col min-h-screen">
+  return (
+    <div className="flex flex-col min-h-screen">
       <main className="flex-1 py-8">
         <div className="container mx-auto max-w-[1400px] px-4 md:px-6">
           <div className="grid gap-8 md:grid-cols-3">
@@ -206,6 +206,45 @@ export default function ProfilePage() {
                         />
                         <div className="absolute bottom-0 right-2/5 bg-green-500 w-4 h-4 rounded-full border-2 border-white"></div>
                       </div>
+                      <Progress value={user.progress} className="h-2" />
+                      <div className="text-xs text-gray-500 text-right">{user.progress}% hoàn thành</div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4 pt-4 border-t">
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-navy-900">{user.completedCourses}</div>
+                        <div className="text-xs text-gray-500">Khóa học đã hoàn thành</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-navy-900">{user.activeCourses}</div>
+                        <div className="text-xs text-gray-500">Khóa học đang học</div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+                <CardFooter className="flex justify-between border-t pt-4">
+                  <div className="flex items-center gap-2 text-sm text-gray-500">
+                    <User className="h-4 w-4" />
+                    <span>Tham gia: {user.joinDate}</span>
+                  </div>
+                  <Link to="/student/profile-edit">
+                    <Button variant="ghost" size="sm">
+                      Chỉnh sửa
+                    </Button>
+                  </Link>
+                </CardFooter>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">Lịch học sắp tới</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {schedule.map((item) => (
+                    <div key={item.id} className="flex gap-4 pb-4 border-b last:border-0 last:pb-0">
+                      <div className="bg-navy-100 text-navy-900 rounded-md p-2 h-fit text-center min-w-[60px]">
+                        <div className="text-xs">
+                          {item.date.split("/")[1]}/{item.date.split("/")[0]}
                     </ScaleIn>
                     <CardTitle>{currentUser?.fullName}</CardTitle>
                     <CardDescription>{currentUser?.email}</CardDescription>
@@ -451,7 +490,7 @@ export default function ProfilePage() {
             </div>
           </div>
         </div>
-      </main>      
+      </main>
     </div>
   )
 }
