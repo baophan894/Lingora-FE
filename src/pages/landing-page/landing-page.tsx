@@ -37,10 +37,15 @@ import {
   AnimatedButton,
 } from "../../components/animation/motion.config";
 import { useAppNavigation } from "../../hooks/app-navigation";
+import { CustomSuccessToast, CustomToast } from "../../components/toast/notificiation-toast";
+import { useEffect } from "react";
+import { useAppSelector } from "../../store/hooks";
+import type { RootState } from "../../store/store";
 
 export default function LandingPage() {
 
   const {gotoSearch} = useAppNavigation();
+  const auth = useAppSelector((state: RootState) => state.auth);
 
   // Dữ liệu mẫu cho giáo viên
   const featuredTeachers = [
@@ -114,9 +119,16 @@ export default function LandingPage() {
     },
   ];
 
+  useEffect(() => {
+    if(auth.user) {
+      CustomSuccessToast(`Chúng tôi rất vui khi bạn quay lại ${auth.user.fullName || ''}!`)
+    }
+  }, [])
+
   return (
     <div className="flex flex-col min-h-screen w-full">
       <main className="flex-1 w-full">
+        <CustomToast/>
         {" "}
         {/* Hero Section */}
         <section className="w-full py-12 md:py-24 lg:py-32 bg-primary-800 text-white">
@@ -130,7 +142,7 @@ export default function LandingPage() {
                   cao và phương pháp giảng dạy hiện đại.
                 </p>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                  <Link to="/courses">
+                  <Link to="/courses-list">
                     <AnimatedButton>
                       <Button onClick={() => gotoSearch()} className="bg-white text-primary-900 hover:bg-black hover:text-white">
                       Khám phá khóa học

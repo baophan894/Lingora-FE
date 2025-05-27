@@ -62,6 +62,12 @@ export const NavbarComponent = () => {
             >
               Về chúng tôi
             </Link>
+            <Link
+              to="/chat"
+              className="text-sm font-medium text-gray-900 hover:text-primary"
+            >
+              Trò chuyện
+            </Link>
           </nav>
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="icon">

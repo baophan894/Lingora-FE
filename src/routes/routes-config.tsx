@@ -15,10 +15,6 @@ export const guestRoutes: RouteObject[] = [
     element: <AuthenticateGate />
   },
   {
-    path: '/search',
-    element: <CoursesPage/>
-  },
-  {
     path: '/',
     element: <StudentLayout />,
     children: [
@@ -29,6 +25,10 @@ export const guestRoutes: RouteObject[] = [
       {
         path: 'reviews',
         element: <ReviewsPage/>
+      },
+      {
+        path: '/courses-list',
+        element: <CoursesPage />
       }
     ]
   }

@@ -13,6 +13,11 @@ const ChatList: React.FC = () => {
     (state: RootState) => state.chat
   );
 
+  const auth = useAppSelector((state: RootState) => state.auth);
+
+  console.log("------------------------------------------------------");
+  console.log("User trong trang chat:", JSON.stringify(auth.user, null, 2));
+
   const currentUser = {
     id: "6831f35d29449a37a3a3093", 
     fullName: "Mock User",

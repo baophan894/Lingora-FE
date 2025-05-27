@@ -20,6 +20,7 @@ export default function AuthPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -100,18 +101,29 @@ export default function AuthPage() {
 
     setIsLoading(true);
     try {
-      if (isLogin) {
-        const result = await dispatch(
+      if (isLogin) {        const result = await dispatch(
           signInWithEmailAndPassword({
             email: formData.email,
             password: formData.password,
           })
         ).unwrap();
-
+        
         if (result) {
-          setTimeout(() => {
-            CustomSuccessToast("Đăng nhập thành công!");
-          }, 1000);
+          const { access_token, user } = result;
+          
+          if (rememberMe) {
+            // Nếu người dùng chọn "Ghi nhớ", lưu vào cookies với thời hạn 30 ngày
+            const d = new Date();
+            d.setTime(d.getTime() + (30 * 24 * 60 * 60 * 1000)); // 30 days
+            document.cookie = `token=${access_token}; expires=${d.toUTCString()}; path=/`;
+            document.cookie = `user=${JSON.stringify(user)}; expires=${d.toUTCString()}; path=/`;
+          } else {
+            // Nếu không, lưu vào sessionStorage
+            sessionStorage.setItem("token", access_token);
+            sessionStorage.setItem("user", JSON.stringify(user));
+          }
+          
+          CustomSuccessToast("Đăng nhập thành công!");
           navigate("/");
         }
       } else {
@@ -139,24 +151,25 @@ export default function AuthPage() {
 
   const handleGoogleLogin = async () => {
     try {
-      // Ở đây bạn sẽ thêm logic để lấy Google access token
-      // Ví dụ:
-      // const response = await googleLogin();
-      // const { accessToken, profileObj } = response;
-      
-      const result = await dispatch(
-        signInWithGoogle({
-          accessToken: "google-access-token",
-          profileObj: {
-            email: "example@gmail.com",
-            name: "Example User",
-            imageUrl: "https://example.com/image.jpg",
-            googleId: "123456789"
-          }
-        })
-      ).unwrap();
 
+      const avatar = "https://res.cloudinary.com/dfvy81evi/image/upload/v1748061418/Lingora_1_c7cbws.png"; // Placeholder avatar URL
+
+      const result = await dispatch(signInWithGoogle({avatar})).unwrap();
+      
       if (result) {
+        const { access_token, user } = result;
+        if (rememberMe) {
+          // Save to cookies if remember me is checked
+          const d = new Date();
+          d.setTime(d.getTime() + (30 * 24 * 60 * 60 * 1000));
+          document.cookie = `token=${access_token}; expires=${d.toUTCString()}; path=/`;
+          document.cookie = `user=${JSON.stringify(user)}; expires=${d.toUTCString()}; path=/`;
+        } else {
+          // Save to sessionStorage if remember me is not checked
+          sessionStorage.setItem("token", access_token);
+          sessionStorage.setItem("user", JSON.stringify(user));
+        }
+        
         CustomSuccessToast("Đăng nhập Google thành công!");
         navigate("/");
       }
@@ -378,11 +391,14 @@ export default function AuthPage() {
                   </div>
                 )}
 
-                {/* Remember Me / Forgot Password (only for login) */}
-                {isLogin && (
+                {/* Remember Me / Forgot Password (only for login) */}                {isLogin && (
                   <div className="flex items-center justify-between">
                     <div>
-                      <Checkbox id="terms" />
+                      <Checkbox 
+                        id="terms" 
+                        checked={rememberMe}
+                        onCheckedChange={(checked) => setRememberMe(checked === true)}
+                      />
                       <label
                         htmlFor="terms"
                         className="px-2 leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"

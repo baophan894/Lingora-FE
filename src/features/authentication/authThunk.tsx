@@ -8,7 +8,7 @@ import type {
   GoogleAuthPayload,
 } from "../../types/authentication-type";
 import axiosPublic from "../../utils/axios/axiosPublic";
-import { LOGIN_API, REGISTER_API, GOOGLE_LOGIN_API } from "./authAPI";
+import { LOGIN_API, REGISTER_API, GOOGLE_LOGIN_API, GOOGLE_AUTH_API } from "./authAPI";
 
 export const signInWithEmailAndPassword = createAsyncThunk<
   AuthResponse,
@@ -61,7 +61,25 @@ export const signInWithGoogle = createAsyncThunk<
   { rejectValue: ErrorResponse }
 >("auth/google", async (payload, thunkAPI) => {
   try {
-    const response = await axiosPublic.post(GOOGLE_LOGIN_API, payload);
+
+    const googleResponse = await axiosPublic.get(GOOGLE_AUTH_API);  
+
+    if(!googleResponse.data || !googleResponse.data.url) {
+      const errorResponse: ErrorResponse = {
+        message: "Google authentication failed",
+        status: "500",
+      };
+      return thunkAPI.rejectWithValue(errorResponse);
+    }
+
+    const googleAuthAccessToken = googleResponse.data.data.access_token;
+    console.log("-----------------------------------------------------")
+    console.log("Access Token từ Google:", googleAuthAccessToken);
+    
+    const response = await axiosPublic.post(GOOGLE_LOGIN_API, {
+      token: googleAuthAccessToken,
+      avatar: payload.avatar
+    });
     console.log("-----------------------------------------------------")
     console.log("Dữ liệu Google login trả về:", response.data);
     console.log("-----------------------------------------------------")
