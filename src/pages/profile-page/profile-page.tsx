@@ -4,9 +4,9 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/tabs"
 import { Progress } from "../../components/ui/progress"
 import { Badge } from "../../components/ui/badge"
-import { BookOpen, Calendar as CalendarIcon, Clock, GraduationCap, User, Settings, LogOut, Bell, MapPin, Calendar } from "lucide-react"
+import { BookOpen, Clock, GraduationCap, User, MapPin, Calendar } from "lucide-react"
 import { Link } from "react-router-dom"
-import { useAppSelector } from "../../store/hooks"
+import { useAppSelector, useAppDispatch } from "../../store/hooks"
 import type { RootState } from "../../store/store"
 import {
   Dialog,
@@ -20,14 +20,54 @@ import FullCalendar from "@fullcalendar/react"
 import dayGridPlugin from "@fullcalendar/daygrid"
 import timeGridPlugin from "@fullcalendar/timegrid"
 import interactionPlugin from "@fullcalendar/interaction"
-
+import AvatarUploader from "../../components/upload/AvatarUploader"
+import { useEffect } from "react"
+import { updateUser, syncFromLocalStorage } from "../../features/authentication/authSlice"
 
 export default function ProfilePage() {
-
+  const dispatch = useAppDispatch()
   const auth = useAppSelector((state: RootState) => state.auth);
 
   const currentUser = auth.user;
   console.log("Thông tin người dùng từ ProfilePage:", JSON.stringify(currentUser, null, 2));
+
+  // Check localStorage on component mount to ensure data consistency
+  useEffect(() => {
+    console.log("ProfilePage mounted, checking localStorage...")
+
+    // Sync from localStorage when component mounts
+    dispatch(syncFromLocalStorage())
+
+    // Optional: Listen for storage changes (if user opens multiple tabs)
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'user' || e.key === 'token') {
+        console.log("Storage changed, syncing...")
+        dispatch(syncFromLocalStorage())
+      }
+    }
+
+    window.addEventListener('storage', handleStorageChange)
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange)
+    }
+  }, [dispatch])
+
+  // Additional effect to handle page visibility change (when user comes back to tab)
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        console.log("Page became visible, syncing data...")
+        dispatch(syncFromLocalStorage())
+      }
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+    }
+  }, [dispatch])
 
   // Dữ liệu mẫu cho hồ sơ người dùng
   const user = {
@@ -134,7 +174,8 @@ export default function ProfilePage() {
               Lịch học được cập nhật theo thời gian thực
             </DialogDescription>
           </DialogHeader>
-          <div className="mt-4 mb-4" style={{ height: "auto" }}>            <FullCalendar
+          <div className="mt-4 mb-4" style={{ height: "auto" }}>
+            <FullCalendar
               plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
               initialView="timeGridWeek"
               headerToolbar={{
@@ -173,7 +214,7 @@ export default function ProfilePage() {
     )
   }
 
-  function renderEventContent(eventInfo: any) {
+  function renderEventContent(eventInfo: { event: { title: string; extendedProps: { room: string } } }) {
     return (
       <div className="p-1 bg-navy-100/90 rounded-sm h-full flex flex-col justify-center overflow-hidden">
         <div className="font-semibold text-xs text-navy-900 mb-0.5 truncate">
@@ -187,8 +228,8 @@ export default function ProfilePage() {
     )
   }
 
-  return (    
-  <div className="flex flex-col min-h-screen">
+  return (
+    <div className="flex flex-col min-h-screen">
       <main className="flex-1 py-8">
         <div className="container mx-auto max-w-[1400px] px-4 md:px-6">
           <div className="grid gap-8 md:grid-cols-3">
@@ -199,11 +240,7 @@ export default function ProfilePage() {
                   <CardHeader className="text-center">
                     <ScaleIn>
                       <div className="mx-auto mb-4 relative">
-                        <img
-                          src={"https://msp.c.yimg.jp/images/v2/FUTi93tXq405grZVGgDqGyM6y-5i8VF5StASNK9eb-grLCrsf4284GyWELLRDTMA6gZgByzN0UpjRuA2VBhBVkTZX0Zk3ocVZNIVTjtfPyUESE7DhB5rrGlCuOawuT245WXyCnTm1LCt5C6K35YSbMFvxh7KjDr1SYT3ZQ1AVWwfKkg8HvFJ-ZYqbsV0m2VCQD3N-QnNsS0Rjr4UjFiMJuc_X2gcZQkHV0Eaft-_-fbNTtamIJ4nHZ4_fozqpd86IIH4Xk91Wb0EF1JUqe16Jy7DdtK5jlMwYfpteFacXHO1RgH2h4_A7_H18--YFag7gNUPoGMDbK8ik0kFQzUksbZjX2DV-MnmpPqV1Qiw5qgso256ggAzleULU7hdj5Dzn_RnciB6Nt03oKi6F_WqqmxikRY2FihheNI1bTbWBh-QutASNkKwOfh49p-QZsLtGzhFB8PHF6fwvowUxf8EZCTl3oKsZ30FwoQ7r4OarlgkpjeuWU21Y2m6hdlkwEdz/premium_photo-1671656349218-5218444643d8?errorImage=false"}
-                          alt={user.name}
-                          className="rounded-full w-24 h-24 object-cover mx-auto"
-                        />
+                        <AvatarUploader key={currentUser?.avatarUrl || 'default'} />
                         <div className="absolute bottom-0 right-2/5 bg-green-500 w-4 h-4 rounded-full border-2 border-white"></div>
                       </div>
                     </ScaleIn>

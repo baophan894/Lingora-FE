@@ -14,8 +14,8 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-  user: null,
-  token: null,
+  user: JSON.parse(localStorage.getItem("user") || "null"),
+  token: localStorage.getItem("token"),
   loading: false,
   error: null,
 };
@@ -29,6 +29,39 @@ const authSlice = createSlice({
       state.token = null;
       localStorage.removeItem("token");
       localStorage.removeItem("user");
+    },
+    updateUser: (state, action: PayloadAction<AuthResponse["user"]>) => {
+      state.user = action.payload;
+      localStorage.setItem("user", JSON.stringify(action.payload));
+      const token = localStorage.getItem("token");
+      if (token) {
+        state.token = token;
+      }
+    },
+    // Thêm action để force refresh avatar
+    refreshAvatar: (state) => {
+      if (state.user) {
+        state.user = { ...state.user };
+        localStorage.setItem("user", JSON.stringify(state.user));
+      }
+    },
+    // Thêm action để sync từ localStorage
+    syncFromLocalStorage: (state) => {
+      const storedUser = localStorage.getItem("user");
+      const storedToken = localStorage.getItem("token");
+
+      if (storedUser) {
+        try {
+          const parsedUser = JSON.parse(storedUser);
+          state.user = parsedUser;
+        } catch (error) {
+          console.error("Error parsing user from localStorage:", error);
+        }
+      }
+
+      if (storedToken) {
+        state.token = storedToken;
+      }
     },
   },
   extraReducers: (builder) => {
@@ -49,7 +82,7 @@ const authSlice = createSlice({
         localStorage.setItem("token", action.payload.access_token);
       })
 
-      .addCase(signUpWithEmailAndPassword.fulfilled, (state, action) => {
+      .addCase(signUpWithEmailAndPassword.fulfilled, (state) => {
         state.loading = false;
       })
 
@@ -71,5 +104,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout } = authSlice.actions;
+export const { logout, updateUser, refreshAvatar, syncFromLocalStorage } = authSlice.actions;
 export default authSlice.reducer;
