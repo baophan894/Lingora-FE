@@ -1,21 +1,23 @@
 export interface Message {
   _id: string;
-  sender: string;
+  senderId: string;
+  receiverId: string;
   content: string;
   chat: string;
   createdAt: string;
   updatedAt: string;
+  timestamp: string;
 }
 
 export interface Chat {
-  id: string;
+  _id: string;
   participant1: {
-    id: string;
+    _id: string;
     fullName: string;
     avatarUrl: string;
   };
   participant2: {
-    id: string;
+    _id: string;
     fullName: string;
     avatarUrl: string;
   };

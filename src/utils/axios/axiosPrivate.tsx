@@ -10,7 +10,8 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const accessToken = sessionStorage.getItem("token");
+    const accessToken = localStorage.getItem("token");
+    console.log("accessToken", accessToken);
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
@@ -31,8 +32,8 @@ axiosInstance.interceptors.response.use(
       (error.response.status === 401 || error.response.status === 403)
     ) {
       // Clear token and user data
-      sessionStorage.removeItem("token");
-      sessionStorage.removeItem("user");
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
 
       // Redirect to login page -> Login page
       window.location.href = "/";

@@ -5,50 +5,51 @@ import type { RootState } from "../../store/store";
 import type { Message } from "../../types/chat";
 import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
 import { socketService } from "../../services/socket.service";
+import defaultAvatar from "../../assets/ic_avatar.jpg";
 
 const ChatWindow: React.FC = () => {
   const dispatch = useAppDispatch();
   const { currentChat, loading } = useAppSelector(
     (state: RootState) => state.chat
   );
+  const auth = useAppSelector((state: RootState) => state.auth);
   const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const currentUser = {
-    id: "6831f35d29449a37a3a3093", // mock user id
-  };
+  const currentUser = auth.user;
 
   const otherUser =
-    currentChat?.participant1.id === currentUser.id
+    currentChat?.participant1._id === currentUser?._id
       ? currentChat?.participant2
       : currentChat?.participant1;
+  
+  useEffect(() => {
+    if (auth.user) {
+      socketService.connect();
+    }
+  }, [auth.user]);
 
   useEffect(() => {
-    socketService.connect();
-
-    socketService.onNewMessage((message: Message) => {
-      if (message.chat === currentChat?.id) {
+    const handleNewMessage = (message: Message) => {
+      if (message.chat?.toString?.() === currentChat?._id?.toString()) {
         dispatch({ type: "chat/addMessage", payload: message });
       }
-    });
-
-    socketService.onMessageSent((message: Message) => {
-      if (message.chat === currentChat?.id) {
-        dispatch({ type: "chat/addMessage", payload: message });
-      }
-    });
+    };
+  
+    socketService.onNewMessage(handleNewMessage);
+    socketService.onMessageSent(handleNewMessage);
 
     return () => {
       socketService.removeListeners();
     };
-  }, [dispatch, currentChat?.id]);
+  }, [dispatch, currentChat?._id]);
 
   useEffect(() => {
     if (currentChat) {
-      dispatch(fetchMessages({ chatId: currentChat.id }));
-      socketService.markAsRead(currentChat.id);
+      dispatch(fetchMessages({ chatId: currentChat._id }));
+      socketService.markAsRead(currentChat._id);
     }
-  }, [dispatch, currentChat]);
+  }, [currentChat?._id]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -59,7 +60,7 @@ const ChatWindow: React.FC = () => {
     if (!newMessage.trim() || !currentChat) return;
 
     try {
-      socketService.sendMessage(currentChat.id, newMessage);
+      socketService.sendMessage(currentChat._id, newMessage);
       setNewMessage("");
     } catch (error) {
       console.error("Failed to send message:", error);
@@ -76,16 +77,22 @@ const ChatWindow: React.FC = () => {
 
   return (
     <div className="flex flex-col h-full bg-white rounded-lg shadow border-l border-gray-200">
-      <div className="p-4 border-b border-gray-200">
+      <div className="p-4 border-b border-gray-200 flex items-center gap-10">
+        <img
+          src={otherUser?.avatarUrl || defaultAvatar}
+          alt={otherUser?.fullName}
+          className="w-10 h-10 rounded-full"
+        />
         <h2 className="text-xl font-semibold">{otherUser?.fullName}</h2>
       </div>
 
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {loading ? (
+        {
+        loading ? (
           <div className="text-center">Loading messages...</div>
         ) : (
           currentChat?.messages.map((message: Message) => {
-            const isMine = message.sender === currentUser.id;
+            const isMine = message.senderId === currentUser?._id;
             return (
               <div
                 key={message._id}
@@ -100,13 +107,14 @@ const ChatWindow: React.FC = () => {
                 >
                   <p className="text-start">{message.content}</p>
                   <p className="text-xs mt-1 opacity-70 text-end">
-                    {new Date(message.createdAt).toLocaleTimeString()}
+                    <span>{new Date(message.timestamp).toLocaleString()}</span>
                   </p>
                 </div>
               </div>
             );
           })
-        )}
+        )
+        }
         <div ref={messagesEndRef} />
       </div>
 

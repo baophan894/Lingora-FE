@@ -1,6 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axiosPrivate from "../../utils/axios/axiosPrivate";
-import axios from "axios";
 import type {
   Chat,
   CreateChatRequest,
@@ -8,7 +7,8 @@ import type {
   Message,
   SendMessageRequest,
 } from "../../types/chat";
-import { MOCK_TOKEN } from "../../services/socket.service";
+import { store } from "../../store/store";
+import axios from "axios";
 
 interface ApiError {
   response?: {
@@ -24,9 +24,9 @@ export const fetchChats = createAsyncThunk<
   { rejectValue: string }
 >("chat/fetchChats", async (_, { rejectWithValue }) => {
   try {
-    const response = await axios.get("http://localhost:4000/chats", {
+    const response = await axiosPrivate.get('/chats', {
       headers: {
-        Authorization: `Bearer ${MOCK_TOKEN}`,
+        Authorization: `Bearer ${store.getState().auth.token}`,
       },
     });
     return response.data.data;
@@ -44,7 +44,11 @@ export const createChat = createAsyncThunk<
   { rejectValue: string }
 >("chat/createChat", async (data, { rejectWithValue }) => {
   try {
-    const response = await axiosPrivate.post("/api/chat", data);
+    const response = await axiosPrivate.post('/chats', data, {
+      headers: {
+        Authorization: `Bearer ${store.getState().auth.token}`,
+      },
+    });
     return response.data;
   } catch (error) {
     const apiError = error as ApiError;
@@ -60,8 +64,13 @@ export const fetchMessages = createAsyncThunk<
   { rejectValue: string }
 >("chat/fetchMessages", async ({ chatId }, { rejectWithValue }) => {
   try {
-    const response = await axiosPrivate.get(`/api/message/${chatId}`);
-    return response.data;
+    const response = await axios.get(`http://localhost:4000/chats/${chatId}/messages`, {
+      headers: {
+        Authorization: `Bearer ${store.getState().auth.token}`,
+      },
+    });
+    console.log("response", response.data.data);
+    return response.data.data;
   } catch (error) {
     const apiError = error as ApiError;
     return rejectWithValue(
@@ -76,11 +85,14 @@ export const sendMessage = createAsyncThunk<
   { rejectValue: string }
 >("chat/sendMessage", async ({ content, chatId }, { rejectWithValue }) => {
   try {
-    const response = await axiosPrivate.post("/api/message", {
-      content,
-      chatId,
+    const response = await axiosPrivate.post(`http://localhost:4000/chats/${chatId}/messages`, {
+      content
+    }, {
+      headers: {
+        Authorization: `Bearer ${store.getState().auth.token}`,
+      },
     });
-    return response.data;
+    return response.data.data;
   } catch (error) {
     const apiError = error as ApiError;
     return rejectWithValue(

@@ -1,10 +1,11 @@
-import { Link, useNavigate } from 'react-router-dom'
-import { Button } from '../ui/button'
-import { Search } from 'lucide-react'
-import { AnimatedButton } from '../animation/motion.config'
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { logout } from '../../features/authentication/authSlice'
-import type { RootState } from '../../store/store'
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "../ui/button";
+import { Search } from "lucide-react";
+import { AnimatedButton } from "../animation/motion.config";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { logout } from "../../features/authentication/authSlice";
+import { ChatBubbleOvalLeftEllipsisIcon } from "@heroicons/react/24/outline";
+import type { RootState } from "../../store/store";
 
 export const NavbarComponent = () => {
   const dispatch = useAppDispatch();
@@ -13,8 +14,8 @@ export const NavbarComponent = () => {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate('/login');
-  };  
+    navigate("/login");
+  };
 
   console.log("Thong tin user tu navbar", JSON.stringify(auth.user, null, 2));
 
@@ -64,24 +65,37 @@ export const NavbarComponent = () => {
             </Link>
           </nav>
           <div className="flex items-center gap-4">
+            {auth.user ? (
+              <Link
+                to="/chat"
+                className="text-sm font-medium text-gray-900 hover:text-primary"
+              >
+                <ChatBubbleOvalLeftEllipsisIcon className="h-5 w-5 text-gray-600" />
+              </Link>
+            ) : (
+              ""
+            )}
             <Button variant="ghost" size="icon">
               <Search className="h-5 w-5" />
               <span className="sr-only">Tìm kiếm</span>
             </Button>{" "}
-            
             {auth.user ? (
               <>
                 <Link to="/student/profile">
                   <AnimatedButton>
-                    <Button variant="outline" className="hidden md:flex hover:bg-black hover:text-white">
-                      {auth.user.fullName || 'Tài khoản'}
+                    <Button
+                      variant="outline"
+                      className="hidden md:flex hover:bg-black hover:text-white"
+                    >
+                      {auth.user.fullName || "Tài khoản"}
                     </Button>
                   </AnimatedButton>
                 </Link>
                 <AnimatedButton>
-                  <Button 
+                  <Button
                     onClick={handleLogout}
-                    className="bg-primary-800 text-white hover:bg-primary-500">
+                    className="bg-primary-800 text-white hover:bg-primary-500"
+                  >
                     Đăng xuất
                   </Button>
                 </AnimatedButton>
@@ -90,7 +104,10 @@ export const NavbarComponent = () => {
               <>
                 <Link to="/login">
                   <AnimatedButton>
-                    <Button variant="outline" className="hidden md:flex hover:bg-black hover:text-white">
+                    <Button
+                      variant="outline"
+                      className="hidden md:flex hover:bg-black hover:text-white"
+                    >
                       Đăng nhập
                     </Button>
                   </AnimatedButton>
@@ -108,5 +125,5 @@ export const NavbarComponent = () => {
         </div>
       </header>
     </>
-  )
-}
+  );
+};
