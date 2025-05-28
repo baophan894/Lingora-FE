@@ -4,8 +4,13 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/tabs"
 import { Badge } from "../../components/ui/badge"
 import { Star, Search } from "lucide-react"
+import { useAppSelector } from '../../store/hooks'
+import type { RootState } from '../../store/store'
 
 export default function ReviewsPage() {
+
+  const auth = useAppSelector((state: RootState) => state.auth);
+
   // Dữ liệu mẫu cho đánh giá
   const reviews = [
     {
@@ -110,52 +115,11 @@ export default function ReviewsPage() {
   // Tính điểm đánh giá trung bình
   const averageRating = reviews.reduce((total, review) => total + review.rating, 0) / reviews.length
 
-  return (
-    <div className="flex flex-col min-h-screen">
-      <header className="sticky top-0 z-50 w-full border-b bg-white">
-        <div className="container flex h-16 items-center justify-between">
-          <div className="flex items-center gap-2">            <Link to="/" className="flex items-center gap-2">
-              <span className="text-2xl font-bold text-navy-900">Lingora</span>
-              <span className="text-sm bg-navy-900 text-white px-2 py-1 rounded-md">日本語</span>
-            </Link>
-          </div>
-          <nav className="hidden md:flex items-center gap-6">
-            <Link to="/" className="text-sm font-medium text-navy-900 hover:text-navy-700">
-              Trang chủ
-            </Link>
-            <Link to="/courses" className="text-sm font-medium text-navy-900 hover:text-navy-700">
-              Khóa học
-            </Link>
-            <Link to="/teachers" className="text-sm font-medium text-navy-900 hover:text-navy-700">
-              Giáo viên
-            </Link>
-            <Link to="/reviews" className="text-sm font-medium text-navy-900 hover:text-navy-700">
-              Đánh giá
-            </Link>
-            <Link to="/about" className="text-sm font-medium text-navy-900 hover:text-navy-700">
-              Về chúng tôi
-            </Link>
-          </nav>
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon">
-              <Search className="h-5 w-5" />
-              <span className="sr-only">Tìm kiếm</span>
-            </Button>            <Link to="/profile">
-              <Button variant="outline" className="hidden md:flex">
-                Tài khoản
-              </Button>
-            </Link>
-            <Link to="/register">
-              <Button className="bg-navy-900 hover:bg-navy-800">Đăng ký học thử</Button>
-            </Link>
-          </div>
-        </div>
-      </header>
-
-      <main className="flex-1 py-8">
-        <div className="container px-4 md:px-6">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-            <div>
+  return (    <div className="flex flex-col min-h-screen w-full">
+      <main className="flex-1 w-full mt-5">
+        <div className="container mx-auto max-w-6xl px-4 md:px-6">
+          <div className="flex flex-col md:flex-row justify-center items-center gap-4 mb-8">
+            <div className="text-center w-full max-w-3xl">
               <h1 className="text-3xl font-bold tracking-tight text-navy-900">Đánh giá từ học viên</h1>
               <p className="text-gray-500 mt-2">
                 Khám phá những trải nghiệm và đánh giá từ học viên đã và đang học tại Lingora
@@ -432,131 +396,6 @@ export default function ReviewsPage() {
           </div>
         </div>
       </main>
-
-      <footer className="w-full py-6 bg-navy-900 text-white">
-        <div className="container px-4 md:px-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="space-y-4">
-              <div className="flex items-center gap-2">
-                <span className="text-2xl font-bold">Lingora</span>
-                <span className="text-sm bg-white text-navy-900 px-2 py-1 rounded-md">日本語</span>
-              </div>
-              <p className="text-gray-300">
-                Trung tâm ngoại ngữ tiếng Nhật hàng đầu với phương pháp giảng dạy hiện đại và hiệu quả.
-              </p>
-            </div>
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Khóa học</h3>
-              <ul className="space-y-2">
-                <li>                  <Link to="/courses/jlpt" className="text-gray-300 hover:text-white">
-                    Luyện thi JLPT
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/courses/communication" className="text-gray-300 hover:text-white">
-                    Giao tiếp
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/courses/business" className="text-gray-300 hover:text-white">
-                    Tiếng Nhật thương mại
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/courses/culture" className="text-gray-300 hover:text-white">
-                    Văn hóa Nhật Bản
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Liên kết</h3>
-              <ul className="space-y-2">
-                <li>                  <Link to="/about" className="text-gray-300 hover:text-white">
-                    Về chúng tôi
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/teachers" className="text-gray-300 hover:text-white">
-                    Giáo viên
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/reviews" className="text-gray-300 hover:text-white">
-                    Đánh giá
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/blog" className="text-gray-300 hover:text-white">
-                    Blog
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Liên hệ</h3>
-              <ul className="space-y-2">
-                <li className="flex items-center gap-2">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-4 w-4"
-                  >
-                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                  </svg>
-                  <span className="text-gray-300">0123 456 789</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-4 w-4"
-                  >
-                    <rect x="2" y="4" width="20" height="16" rx="2"></rect>
-                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                  </svg>
-                  <span className="text-gray-300">info@lingora.vn</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-4 w-4"
-                  >
-                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
-                    <circle cx="12" cy="10" r="3"></circle>
-                  </svg>
-                  <span className="text-gray-300">123 Đường ABC, Quận 1, TP.HCM</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-700 mt-8 pt-6 text-center text-gray-300">
-            <p>© {new Date().getFullYear()} Lingora. Tất cả quyền được bảo lưu.</p>
-          </div>
-        </div>
-      </footer>
     </div>
   )
 }

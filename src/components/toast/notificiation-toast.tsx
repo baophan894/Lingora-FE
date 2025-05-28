@@ -7,7 +7,7 @@ export const CustomToast = () => {
     <ToastContainer
       position="top-right"
       autoClose={2000}
-      hideProgressBar={true}
+      hideProgressBar={false} // Changed to false to show progress bar
       newestOnTop={true}
       closeOnClick={false}
       closeButton={false}
@@ -36,7 +36,7 @@ export const CustomSuccessToast = (msg) => {
   return toast.success(msg, {
     position: "top-right",
     autoClose: 2000,
-    hideProgressBar: true,
+    hideProgressBar: false, // Show progress bar
     closeOnClick: true,
     pauseOnHover: true,
     draggable: true,
@@ -53,13 +53,13 @@ export const CustomFailedToast = (msg) => {
   return toast.error(msg, {
     position: "top-right",
     autoClose: 2000,
-    hideProgressBar: true,
+    hideProgressBar: false, // Show progress bar
     closeOnClick: true,
     pauseOnHover: true,
     draggable: true,
     icon: <AiOutlineCloseCircle size={22} color="#EF4444" />,
     style: {
-      backgroundColor: "#FEF2F2",
+      backgroundColor: "#FEF2F2", 
       color: "#991B1B",
       borderLeft: "4px solid #EF4444"
     }
