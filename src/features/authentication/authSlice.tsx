@@ -35,7 +35,41 @@ const authSlice = createSlice({
       localStorage.removeItem("token");
       localStorage.removeItem("user");
     },
+     updateUser: (state, action: PayloadAction<AuthResponse["user"]>) => {
+      state.user = action.payload;
+      localStorage.setItem("user", JSON.stringify(action.payload));
+      const token = localStorage.getItem("token");
+      if (token) {
+        state.token = token;
+      }
+    },
+    // Thêm action để force refresh avatar
+    refreshAvatar: (state) => {
+      if (state.user) {
+        state.user = { ...state.user };
+        localStorage.setItem("user", JSON.stringify(state.user));
+      }
+    },
+    // Thêm action để sync từ localStorage
+    syncFromLocalStorage: (state) => {
+      const storedUser = localStorage.getItem("user");
+      const storedToken = localStorage.getItem("token");
+
+      if (storedUser) {
+        try {
+          const parsedUser = JSON.parse(storedUser);
+          state.user = parsedUser;
+        } catch (error) {
+          console.error("Error parsing user from localStorage:", error);
+        }
+      }
+
+      if (storedToken) {
+        state.token = storedToken;
+      }
+    },
   },
+
   extraReducers: (builder) => {
     builder
       .addCase(signInWithEmailAndPassword.fulfilled, (state, action) => {
@@ -89,5 +123,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout } = authSlice.actions;
+export const { logout, updateUser, refreshAvatar, syncFromLocalStorage } = authSlice.actions;
 export default authSlice.reducer;

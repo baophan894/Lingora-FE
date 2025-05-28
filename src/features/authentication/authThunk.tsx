@@ -81,6 +81,8 @@ export const verifyEmail = createAsyncThunk<
   { rejectValue: ErrorResponse }
 >("auth/verifyEmail", async (token, thunkAPI) => {
   try {
+    console.log("-----------------------------------------------------")
+    console.log("Token xác thực email:", token);
     const res = await axiosPublic.get(`${VERIFY_EMAIL_API}?token=${token}`);
     return res.data;
   } catch (error: any) {

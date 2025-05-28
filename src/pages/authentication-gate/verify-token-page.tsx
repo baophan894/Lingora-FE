@@ -3,6 +3,10 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { CheckCircle, XCircle } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { verifyEmail } from "../../features/authentication/authThunk";
+import axiosPublic from "../../utils/axios/axiosPublic";
+import { BASE_URL } from "../../utils/constant-value/constant";
+import { CustomSuccessToast } from "../../components/toast/notificiation-toast";
+import axios from "axios";
 
 export default function VerifyTokenPage() {
   const navigate = useNavigate();
@@ -10,12 +14,24 @@ export default function VerifyTokenPage() {
   const dispatch = useAppDispatch();
   const searchParams = new URLSearchParams(location.search);
   const token = searchParams.get("token");
-
   const { verifyStatus, verifyMessage } = useAppSelector((state) => state.auth);
 
+  const verifyEmailToken = async (token: String) => {
+   try {
+      const response = await axios.get(`${BASE_URL}/users/verify-email?token=${token}`);
+      if (response.status === 200 && response.data.message) {   
+         CustomSuccessToast("Xác thực email thành công!");
+      }
+   } catch (error) {
+      console.error("Error verifying email token:", error);
+   }
+  }
+
   useEffect(() => {
-    if (token) dispatch(verifyEmail(token));
-  }, [token, dispatch]);
+    if (token) {
+      verifyEmailToken(token);
+    };
+  }, [token]);
 
   console.log("Token from URL:", token);
 
