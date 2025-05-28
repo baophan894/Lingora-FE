@@ -35,7 +35,7 @@ const authSlice = createSlice({
       localStorage.removeItem("token");
       localStorage.removeItem("user");
     },
-     updateUser: (state, action: PayloadAction<AuthResponse["user"]>) => {
+    updateUser: (state, action: PayloadAction<AuthResponse["user"]>) => {
       state.user = action.payload;
       localStorage.setItem("user", JSON.stringify(action.payload));
       const token = localStorage.getItem("token");

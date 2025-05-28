@@ -9,7 +9,7 @@
 - Dùng cho các API có middleware isAuthenticate
 - Tự động gửi token trong Authorization header
 - Xử lý refresh token khi token hết hạn
-- Sử dụng cho các protected endpoints (GET, POST, PUT, PATCH, DELETE)
+- Sử dụng 32wcho các protected endpoints (GET, POST, PUT, PATCH, DELETE)
 - Tự động giải mã token để lấy thông tin user
 
 -----------------------------------------------------------------------------------------------------------------------------------------

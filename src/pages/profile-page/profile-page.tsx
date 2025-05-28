@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/ta
 import { Progress } from "../../components/ui/progress"
 import { Badge } from "../../components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "../../components/ui/avatar"
-import { BookOpen, Clock, GraduationCap, User, Calendar } from "lucide-react"
+import { BookOpen, Clock, GraduationCap, User, Calendar, MapPin } from "lucide-react"
 import { Link } from "react-router-dom"
 import { useAppSelector, useAppDispatch } from "../../store/hooks"
 import type { RootState } from "../../store/store"
