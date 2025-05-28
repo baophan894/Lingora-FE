@@ -14,17 +14,19 @@ export interface RegisterPayload {
 }
 
 export interface GoogleAuthPayload {
-  avatar: string        // URL của ảnh đại diện
+  token: string
+  avatar?: string
 }
 
 // Back-end trả về gì thì set ở đây là cái đó
 export interface AuthResponse {
+  data: any
   user: User
   access_token: string
+  refresh_token: string
 }
  
 export interface LoginGoogleResponse {
-
 }
 
 export interface RegisterResponse {

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Eye, EyeOff, Mail, Lock, User, ArrowRight, Phone } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import type { RootState } from "../../store/store";
+import { useGoogleLogin } from '@react-oauth/google';
 import {
   signInWithEmailAndPassword,
   signInWithGoogle,
@@ -17,6 +17,8 @@ import {
 } from "../../components/toast/notificiation-toast";
 import { AnimatedButton } from "../../components/animation/motion.config";
 import { Button } from "../../components/ui/button";
+import axios from "axios";
+import { useAppNavigation } from "../../hooks/app-navigation";
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -34,6 +36,7 @@ export default function AuthPage() {
   });
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const {gotoForgotPassword} = useAppNavigation();
 
   console.log("Dữ liệu trong LOGIN PAGE -----------------------------------");
   console.log("Dữ liệu trong Form Data: ", JSON.stringify(formData, null, 2));
@@ -155,36 +158,57 @@ export default function AuthPage() {
     }
   };
 
-  const handleGoogleLogin = async () => {
+
+const handleGoogleLogin = useGoogleLogin({
+  onSuccess: async (tokenResponse) => {
     try {
-      const avatar =
-        "https://res.cloudinary.com/dfvy81evi/image/upload/v1748061418/Lingora_1_c7cbws.png"; // Placeholder avatar URL
-
-      const result = await dispatch(signInWithGoogle({ avatar })).unwrap();
-
-      if (result) {
-        const { access_token, user } = result;
-        if (rememberMe) {
-          // Save to cookies if remember me is checked
-          const d = new Date();
-          d.setTime(d.getTime() + 30 * 24 * 60 * 60 * 1000);
-          document.cookie = `token=${access_token}; expires=${d.toUTCString()}; path=/`;
-          document.cookie = `user=${JSON.stringify(
-            user
-          )}; expires=${d.toUTCString()}; path=/`;
-        } else {
-          // Save to localStorage if remember me is not checked
-          localStorage.setItem("token", access_token);
-          localStorage.setItem("user", JSON.stringify(user));
+      // Lấy thông tin user từ Google API
+      const googleUserInfo = await axios.get(
+        'https://www.googleapis.com/oauth2/v3/userinfo',
+        {
+          headers: {
+            Authorization: `Bearer ${tokenResponse.access_token}`,
+          },
         }
+      );
 
-        CustomSuccessToast("Đăng nhập Google thành công!");
+      const { email, name, picture } = googleUserInfo.data;
+
+      const result = await dispatch(
+        signInWithGoogle({
+          token: tokenResponse.access_token,
+          avatar: picture,
+        })
+      ).unwrap();
+
+      localStorage.setItem("user", JSON.stringify(result.data.user));
+      localStorage.setItem("token", JSON.stringify(result.data.access_token));
+
+      console.log("Dữ liệu đăng nhập Google:", result);
+      console.log("Dữ liệu user từ Google:", googleUserInfo.data);
+
+      // CustomSuccessToast("Đăng nhập Google thành công!");
+
+      setTimeout(() => {
         navigate("/");
+      });
+    } catch (error) {
+      // Kiểm tra error có phải AxiosError không
+      if (axios.isAxiosError(error)) {
+        CustomFailedToast(error.response?.data?.message || error.message);
+      } else if (error instanceof Error) {
+        CustomFailedToast(error.message);
+      } else {
+        CustomFailedToast("Đăng nhập Google thất bại");
       }
-    } catch (error: any) {
-      CustomFailedToast(error.message || "Đăng nhập Google thất bại");
     }
-  };
+  },
+  onError: (error) => {
+    CustomFailedToast("Đăng nhập Google thất bại");
+    console.error(error);
+  },
+});
+
 
   const toggleMode = () => {
     setIsLogin(!isLogin);
@@ -287,7 +311,6 @@ export default function AuthPage() {
                     </div>
                   </div>
                 )}
-                
                 {!isLogin && (
                   <div className="space-y-2 text-left">
                     <Phone className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -297,7 +320,7 @@ export default function AuthPage() {
                     <div className="relative">
                       <input
                         type="tel"
-                        name="phone_number" 
+                        name="phone_number"
                         value={formData.phone_number}
                         onChange={handleInputChange}
                         className="w-full pl-5 pr-4 py-2 text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white shadow-sm"
@@ -307,7 +330,6 @@ export default function AuthPage() {
                     </div>
                   </div>
                 )}
-                
                 <div className="space-y-2 text-left">
                   <label className="block text-sm font-medium text-gray-700 text-left">
                     Email
@@ -325,7 +347,6 @@ export default function AuthPage() {
                     />
                   </div>
                 </div>
-                
                 <div className="space-y-2 text-left">
                   <label className="block text-sm font-medium text-gray-700 text-left">
                     Mật khẩu
@@ -406,6 +427,7 @@ export default function AuthPage() {
                       </label>
                     </div>
                     <button
+                      onClick={() => gotoForgotPassword()}
                       type="button"
                       className="text-sm text-black hover:text-red-800 font-medium transition-colors"
                     >
@@ -463,7 +485,7 @@ export default function AuthPage() {
                 <div className="mt-6 grid grid-cols-2 gap-4">
                   {" "}
                   <button
-                    onClick={handleGoogleLogin}
+                    onClick={() => handleGoogleLogin()}
                     className="w-full transform transition-transform duration-300 hover:scale-105 inline-flex justify-center py-3 px-4 border border-gray-300 rounded-xl shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
                   >
                     <svg className="w-5 h-5" viewBox="0 0 24 24">

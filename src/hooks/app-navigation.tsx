@@ -7,5 +7,6 @@ export const useAppNavigation = () => {
     goToHome: () => navigate("/"),
     goToLogin: () => navigate("/login"),
     gotoSearch: () => navigate("/courses-list"),
+    gotoForgotPassword: () => navigate("/forgot-password"),
   };
 };

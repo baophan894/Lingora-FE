@@ -5,10 +5,10 @@ import type {
   LoginPayload,
   RegisterPayload,
   RegisterResponse,
-  GoogleAuthPayload,
+  GoogleAuthResponse,
 } from "../../types/authentication-type";
 import axiosPublic from "../../utils/axios/axiosPublic";
-import { LOGIN_API, REGISTER_API, GOOGLE_LOGIN_API, GOOGLE_AUTH_API } from "./authAPI";
+import { LOGIN_API, REGISTER_API, GOOGLE_LOGIN_API, GOOGLE_AUTH_API, VERIFY_EMAIL_API } from "./authAPI";
 
 export const signInWithEmailAndPassword = createAsyncThunk<
   AuthResponse,
@@ -56,40 +56,38 @@ export const signUpWithEmailAndPassword = createAsyncThunk<
 
 // Google 
 export const signInWithGoogle = createAsyncThunk<
-  AuthResponse,
-  GoogleAuthPayload,
+  GoogleAuthResponse,
+  { token: string; avatar?: string },
   { rejectValue: ErrorResponse }
 >("auth/google", async (payload, thunkAPI) => {
   try {
-
-    const googleResponse = await axiosPublic.get(GOOGLE_AUTH_API);  
-
-    if(!googleResponse.data || !googleResponse.data.url) {
-      const errorResponse: ErrorResponse = {
-        message: "Google authentication failed",
-        status: "500",
-      };
-      return thunkAPI.rejectWithValue(errorResponse);
-    }
-
-    const googleAuthAccessToken = googleResponse.data.data.access_token;
-    console.log("-----------------------------------------------------")
-    console.log("Access Token từ Google:", googleAuthAccessToken);
-    
     const response = await axiosPublic.post(GOOGLE_LOGIN_API, {
-      token: googleAuthAccessToken,
-      avatar: payload.avatar
+      token: payload.token,
+      avatar: payload.avatar,
     });
-    console.log("-----------------------------------------------------")
-    console.log("Dữ liệu Google login trả về:", response.data);
-    console.log("-----------------------------------------------------")
+
     return response.data.data;
   } catch (error: any) {
-    const errorResponse: ErrorResponse = {
+    return thunkAPI.rejectWithValue({
       message: error.response?.data?.message || error.message || "Google login failed",
       status: error.response?.status || "500",
-    };
-    return thunkAPI.rejectWithValue(errorResponse);
+    });
+  }
+});
+
+export const verifyEmail = createAsyncThunk<
+  { message: string },
+  string,
+  { rejectValue: ErrorResponse }
+>("auth/verifyEmail", async (token, thunkAPI) => {
+  try {
+    const res = await axiosPublic.get(`${VERIFY_EMAIL_API}?token=${token}`);
+    return res.data;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue({
+      message: error.response?.data?.message || "Xác thực thất bại",
+      status: error.response?.status || "500",
+    });
   }
 });
 
