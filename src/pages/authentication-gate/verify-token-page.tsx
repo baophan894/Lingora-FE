@@ -19,6 +19,7 @@ export default function VerifyTokenPage() {
   const verifyEmailToken = async (token: String) => {
    try {
       const response = await axios.get(`${BASE_URL}/users/verify-email?token=${token}`);
+      console.log("Response from email verification:", response.data);
       if (response.status === 200 && response.data.message) {   
          CustomSuccessToast("Xác thực email thành công!");
       }

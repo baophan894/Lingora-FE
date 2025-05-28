@@ -17,11 +17,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../../components/ui/dialog"
-// Temporarily commented out until packages are installed
-// import FullCalendar from "@fullcalendar/react"
-// import dayGridPlugin from "@fullcalendar/daygrid"
-// import timeGridPlugin from "@fullcalendar/timegrid"
-// import interactionPlugin from "@fullcalendar/interaction"
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import interactionPlugin from "@fullcalendar/interaction";
 import { useEffect } from "react"
 import { syncFromLocalStorage } from "../../features/authentication/authSlice"
 
@@ -144,8 +143,19 @@ export default function ProfilePage() {
   ]
 
   function ScheduleDialog({ scheduleData }: { scheduleData: typeof schedule }) {
-    // Temporarily disabled until FullCalendar packages are installed
-    console.log("Schedule data:", scheduleData) // Temporary usage to avoid linter error
+    // Chuyển đổi dữ liệu schedule thành events cho FullCalendar
+    const events = scheduleData.map(item => {
+      // Chuyển "20/05/2024" => "2024-05-20"
+      const [day, month, year] = item.date.split("/");
+      const dateISO = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+      const [startTime, endTime] = item.time.split(" - ");
+      return {
+        title: `${item.course} - ${item.teacher}`,
+        start: `${dateISO}T${startTime}`,
+        end: `${dateISO}T${endTime}`,
+        extendedProps: { room: item.room }
+      };
+    });
 
     return (
       <Dialog>
@@ -162,11 +172,6 @@ export default function ProfilePage() {
             </DialogDescription>
           </DialogHeader>
           <div className="mt-4 mb-4" style={{ height: "auto" }}>
-            {/* FullCalendar temporarily disabled until packages are installed */}
-            <div className="p-4 text-center text-gray-500 border rounded">
-              Lịch học sẽ được hiển thị tại đây khi cài đặt FullCalendar
-            </div>
-            {/*
             <FullCalendar
               plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
               initialView="timeGridWeek"
@@ -200,7 +205,6 @@ export default function ProfilePage() {
               }}
               eventClassNames="hover:brightness-95 cursor-pointer"
             />
-            */}
           </div>
         </DialogContent>
       </Dialog>
@@ -208,19 +212,19 @@ export default function ProfilePage() {
   }
 
   // Temporarily commented out until FullCalendar packages are installed
-  // function renderEventContent(eventInfo: { event: { title: string; extendedProps: { room: string } } }) {
-  //   return (
-  //     <div className="p-1 bg-navy-100/90 rounded-sm h-full flex flex-col justify-center overflow-hidden">
-  //       <div className="font-semibold text-xs text-navy-900 mb-0.5 truncate">
-  //         {eventInfo.event.title}
-  //       </div>
-  //       <div className="text-[11px] flex items-center gap-1 text-navy-700">
-  //         <MapPin className="h-3 w-3" />
-  //         <span>{eventInfo.event.extendedProps.room}</span>
-  //       </div>
-  //     </div>
-  //   )
-  // }
+  function renderEventContent(eventInfo: { event: { title: string; extendedProps: { room: string } } }) {
+    return (
+      <div className="p-1 bg-navy-100/90 rounded-sm h-full flex flex-col justify-center overflow-hidden">
+        <div className="font-semibold text-xs text-navy-900 mb-0.5 truncate">
+          {eventInfo.event.title}
+        </div>
+        <div className="text-[11px] flex items-center gap-1 text-navy-700">
+          <MapPin className="h-3 w-3" />
+          <span>{eventInfo.event.extendedProps.room}</span>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="flex flex-col min-h-screen">

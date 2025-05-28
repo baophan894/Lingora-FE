@@ -6,8 +6,8 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { logout } from "../../features/authentication/authSlice";
 import { ChatBubbleOvalLeftEllipsisIcon } from "@heroicons/react/24/outline";
 import type { RootState } from "../../store/store";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../../components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "../../components/ui/avatar";
 
 export const NavbarComponent = () => {
   const dispatch = useAppDispatch();
@@ -97,7 +97,7 @@ export const NavbarComponent = () => {
                   >
                     <Avatar className="mr-2 h-7 w-7">
                       <AvatarImage
-                        src="https://github.com/shadcn.png"
+                        src={auth.user?.avatarUrl || "https://ui-avatars.com/api/?name=CN&background=random&size=128"}
                         alt="@shadcn"
                       />
                       <AvatarFallback>CN</AvatarFallback>
