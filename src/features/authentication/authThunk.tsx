@@ -8,7 +8,7 @@ import type {
   GoogleAuthResponse,
 } from "../../types/authentication-type";
 import axiosPublic from "../../utils/axios/axiosPublic";
-import { LOGIN_API, REGISTER_API, GOOGLE_LOGIN_API, GOOGLE_AUTH_API, VERIFY_EMAIL_API } from "./authAPI";
+import { LOGIN_API, REGISTER_API, GOOGLE_LOGIN_API } from "./authAPI";
 
 export const signInWithEmailAndPassword = createAsyncThunk<
   AuthResponse,
@@ -75,23 +75,6 @@ export const signInWithGoogle = createAsyncThunk<
   }
 });
 
-export const verifyEmail = createAsyncThunk<
-  { message: string },
-  string,
-  { rejectValue: ErrorResponse }
->("auth/verifyEmail", async (token, thunkAPI) => {
-  try {
-    console.log("-----------------------------------------------------")
-    console.log("Token xác thực email:", token);
-    const res = await axiosPublic.get(`${VERIFY_EMAIL_API}?token=${token}`);
-    return res.data;
-  } catch (error: any) {
-    return thunkAPI.rejectWithValue({
-      message: error.response?.data?.message || "Xác thực thất bại",
-      status: error.response?.status || "500",
-    });
-  }
-});
 
 // update
 // delete

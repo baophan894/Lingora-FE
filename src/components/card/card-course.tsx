@@ -1,9 +1,8 @@
+import React from 'react';
+import type { CardCourse } from '../../types/card-type';
 
-interface CardCourseProps {
-   
-}
 
-export const CardCourse = () => {
+export const CardCourseComponents: React.FC<CardCourse> = ({ course }) => {
   return (
     <div>CardCourse</div>
   )

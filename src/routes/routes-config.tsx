@@ -39,13 +39,17 @@ export const guestRoutes: RouteObject[] = [
         element: <LandingPage />,
       },
       {
-        path: "reviews",
+        path: "/reviews",
         element: <ReviewsPage />,
       },
       {
         path: "/courses-list",
         element: <CoursesPage />,
       },
+      {
+        path:'/chat',
+        element: <Chat />
+      }
     ],
   },
 ];

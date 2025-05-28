@@ -26,7 +26,14 @@ export interface AuthResponse {
   refresh_token: string
 }
  
-export interface LoginGoogleResponse {
+export interface GoogleAuthResponse {
+  status: number
+  message: string
+  data: {
+    access_token: string
+    refresh_token: string
+    user: User
+  }
 }
 
 export interface RegisterResponse {

@@ -137,7 +137,7 @@ export function StudentInfoForm({ studentData, onUpdate }: StudentInfoFormProps)
             {/* Form Fields */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                    <Label htmlFor="fullName">First Name *</Label>
+                    <Label htmlFor="fullName">Họ *</Label>
                     <Input
                         id="fullName"
                         value={formData.firstName}
@@ -149,19 +149,19 @@ export function StudentInfoForm({ studentData, onUpdate }: StudentInfoFormProps)
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="fullName">Last Name *</Label>
+                    <Label htmlFor="fullName">Tên *</Label>
                     <Input
                         id="fullName"
                         value={formData.lastName}
                         onChange={(e) => handleInputChange("lastName", e.target.value)}
                         className={errors.lastName ? "border-red-500" : ""}
-                        placeholder="Enter your last name"
+                        placeholder="Tên của bạn"
                     />
                     {errors.lastName && <p className="text-sm text-red-500">{errors.lastName}</p>}
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="email">Email Address *</Label>
+                    <Label htmlFor="email">Địa chỉ email *</Label>
                     <Input
                         id="email"
                         type="email"
@@ -171,24 +171,25 @@ export function StudentInfoForm({ studentData, onUpdate }: StudentInfoFormProps)
                         className={`${errors.email ? "border-red-500" : ""} bg-gray-50 text-gray-700 cursor-not-allowed`}
                         placeholder="Enter your email address"
                     />
-                    <p className="text-xs text-gray-500">Email address cannot be changed</p>
+                    <p className="text-xs text-gray-500">Địa chỉ email không thể thay đổi</p>
                     {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="phone">Phone Number *</Label>
+                    <Label htmlFor="phone">Số điện thoại *</Label>
                     <Input
                         id="phone"
                         value={formData.phone}
                         onChange={(e) => handleInputChange("phone", e.target.value)}
                         className={errors.phone ? "border-red-500" : ""}
-                        placeholder="Enter your phone number"
+                        placeholder="Nhập số điện thoại của bạn (bao gồm mã vùng)"
+                        type="tel"      
                     />
                     {errors.phone && <p className="text-sm text-red-500">{errors.phone}</p>}
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="dateOfBirth">Date of Birth *</Label>
+                    <Label htmlFor="dateOfBirth">Ngày sinh *</Label>
                     <Input
                         id="dateOfBirth"
                         type="date"
@@ -200,16 +201,16 @@ export function StudentInfoForm({ studentData, onUpdate }: StudentInfoFormProps)
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="gender">Gender *</Label>
+                    <Label htmlFor="gender">Giới tính *</Label>
                     <Select value={formData.gender} onValueChange={(value) => handleInputChange("gender", value)}>
                         <SelectTrigger className={errors.gender ? "border-red-500" : ""}>
-                            <SelectValue placeholder="Select your gender" />
+                            <SelectValue placeholder="Chọn giới tính" />
                         </SelectTrigger>
                         <SelectContent className="bg-gray-50">
-                            <SelectItem value="male">Male</SelectItem>
-                            <SelectItem value="female">Female</SelectItem>
-                            <SelectItem value="other">Other</SelectItem>
-                            <SelectItem value="prefer-not-to-say">Prefer not to say</SelectItem>
+                            <SelectItem value="male">Nam</SelectItem>
+                            <SelectItem value="female">Nữ</SelectItem>
+                            <SelectItem value="other">Khác</SelectItem>
+                            <SelectItem value="prefer-not-to-say">Không muốn nói</SelectItem>
                         </SelectContent>
                     </Select>
                     {errors.gender && <p className="text-sm text-red-500">{errors.gender}</p>}
@@ -217,12 +218,12 @@ export function StudentInfoForm({ studentData, onUpdate }: StudentInfoFormProps)
             </div>
 
             <div className="space-y-2">
-                <Label htmlFor="address">Address</Label>
+                <Label htmlFor="address">Địa chỉ</Label>
                 <Textarea
                     id="address"
                     value={formData.address}
                     onChange={(e) => handleInputChange("address", e.target.value)}
-                    placeholder="Enter your full address"
+                    placeholder="Nhập địa chỉ của bạn"
                     rows={3}
                 />
             </div>
@@ -237,12 +238,11 @@ export function StudentInfoForm({ studentData, onUpdate }: StudentInfoFormProps)
                     {isLoading ? (
                         <>
                             <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                            Updating...
                         </>
                     ) : (
                         <>
                             <Save className="w-4 h-4 mr-2" />
-                            Save Changes
+                            Lưu thay đổi
                         </>
                     )}
                 </Button>

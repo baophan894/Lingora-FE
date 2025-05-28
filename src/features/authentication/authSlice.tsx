@@ -3,7 +3,6 @@ import {
   signInWithEmailAndPassword,
   signUpWithEmailAndPassword,
   signInWithGoogle,
-  verifyEmail,
 } from "./authThunk";
 import type { AuthResponse, ErrorResponse } from "../../types/authentication-type";
 
@@ -90,19 +89,6 @@ const authSlice = createSlice({
 
       .addCase(signUpWithEmailAndPassword.fulfilled, (state) => {
         state.loading = false;
-      })
-
-      .addCase(verifyEmail.pending, (state) => {
-        state.verifyStatus = "pending";
-        state.verifyMessage = "";
-      })
-      .addCase(verifyEmail.fulfilled, (state, action) => {
-        state.verifyStatus = "success";
-        state.verifyMessage = action.payload.message;
-      })
-      .addCase(verifyEmail.rejected, (state, action) => {
-        state.verifyStatus = "error";
-        state.verifyMessage = action.payload?.message || "Xác thực thất bại";
       })
 
       .addMatcher(
