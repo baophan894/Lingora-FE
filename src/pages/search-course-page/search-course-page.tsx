@@ -94,12 +94,6 @@ export default function CoursesPage() {
       <main className="flex-1 py-8 w-full max-w-[2000px] mx-auto">
         <div className="px-4 md:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-            <div>
-              <h1 className="text-3xl font-bold tracking-tight text-navy-900">Khóa học tiếng Nhật</h1>
-              <p className="text-gray-500 mt-2">
-                Khám phá các khóa học tiếng Nhật đa dạng từ sơ cấp đến cao cấp tại Lingora
-              </p>
-            </div>
           </div>
 
           {/* Tìm kiếm và lọc */}
@@ -114,7 +108,7 @@ export default function CoursesPage() {
                   <SelectTrigger className="w-[180px]">
                     <SelectValue placeholder="Cấp độ" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-white">
                     <SelectItem value="all">Tất cả cấp độ</SelectItem>
                     <SelectItem value="beginner">Sơ cấp</SelectItem>
                     <SelectItem value="intermediate">Trung cấp</SelectItem>
@@ -125,7 +119,7 @@ export default function CoursesPage() {
                   <SelectTrigger className="w-[180px]">
                     <SelectValue placeholder="Thời lượng" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-white">
                     <SelectItem value="all">Tất cả thời lượng</SelectItem>
                     <SelectItem value="short">Dưới 2 tháng</SelectItem>
                     <SelectItem value="medium">2-4 tháng</SelectItem>

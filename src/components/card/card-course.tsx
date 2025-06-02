@@ -4,6 +4,8 @@ import type { CardCourse } from '../../types/card-type';
 
 export const CardCourseComponents: React.FC<CardCourse> = ({ course }) => {
   return (
-    <div>CardCourse</div>
+    <div>
+      
+    </div>
   )
 }

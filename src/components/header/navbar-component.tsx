@@ -42,7 +42,7 @@ export const NavbarComponent = () => {
               Trang chủ
             </Link>
             <Link
-              to="/courses"
+              to="/courses-list"
               className="text-sm font-medium text-gray-900 hover:text-primary"
             >
               Khóa học
