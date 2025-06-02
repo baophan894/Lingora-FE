@@ -90,59 +90,10 @@ export default function CoursesPage() {
     },
   ]
 
-  return (
-    <div className="flex flex-col min-h-screen">
-      <header className="sticky top-0 z-50 w-full border-b bg-white">
-        <div className="container flex h-16 items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Link to="/" className="flex items-center gap-2">
-              <span className="text-2xl font-bold text-navy-900">Lingora</span>
-              <span className="text-sm bg-navy-900 text-white px-2 py-1 rounded-md">日本語</span>
-            </Link>
-          </div>
-          <nav className="hidden md:flex items-center gap-6">
-            <Link to="/" className="text-sm font-medium text-navy-900 hover:text-navy-700">
-              Trang chủ
-            </Link>
-            <Link to="/courses" className="text-sm font-medium text-navy-900 hover:text-navy-700">
-              Khóa học
-            </Link>
-            <Link to="/teachers" className="text-sm font-medium text-navy-900 hover:text-navy-700">
-              Giáo viên
-            </Link>
-            <Link to="/reviews" className="text-sm font-medium text-navy-900 hover:text-navy-700">
-              Đánh giá
-            </Link>
-            <Link to="/about" className="text-sm font-medium text-navy-900 hover:text-navy-700">
-              Về chúng tôi
-            </Link>
-          </nav>
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon">
-              <Search className="h-5 w-5" />
-              <span className="sr-only">Tìm kiếm</span>
-            </Button>
-            <Link to="/profile">
-              <Button variant="outline" className="hidden md:flex">
-                Tài khoản
-              </Button>
-            </Link>
-            <Link to="/register">
-              <Button className="bg-navy-900 hover:bg-navy-800">Đăng ký học thử</Button>
-            </Link>
-          </div>
-        </div>
-      </header>
-
-      <main className="flex-1 py-8">
-        <div className="container px-4 md:px-6">
+  return (    <div className="flex flex-col min-h-screen w-full">
+      <main className="flex-1 py-8 w-full max-w-[2000px] mx-auto">
+        <div className="px-4 md:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-            <div>
-              <h1 className="text-3xl font-bold tracking-tight text-navy-900">Khóa học tiếng Nhật</h1>
-              <p className="text-gray-500 mt-2">
-                Khám phá các khóa học tiếng Nhật đa dạng từ sơ cấp đến cao cấp tại Lingora
-              </p>
-            </div>
           </div>
 
           {/* Tìm kiếm và lọc */}
@@ -157,7 +108,7 @@ export default function CoursesPage() {
                   <SelectTrigger className="w-[180px]">
                     <SelectValue placeholder="Cấp độ" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-white">
                     <SelectItem value="all">Tất cả cấp độ</SelectItem>
                     <SelectItem value="beginner">Sơ cấp</SelectItem>
                     <SelectItem value="intermediate">Trung cấp</SelectItem>
@@ -168,7 +119,7 @@ export default function CoursesPage() {
                   <SelectTrigger className="w-[180px]">
                     <SelectValue placeholder="Thời lượng" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-white">
                     <SelectItem value="all">Tất cả thời lượng</SelectItem>
                     <SelectItem value="short">Dưới 2 tháng</SelectItem>
                     <SelectItem value="medium">2-4 tháng</SelectItem>
@@ -435,10 +386,8 @@ export default function CoursesPage() {
             </TabsContent>
           </Tabs>
         </div>
-      </main>
-
-      <footer className="w-full py-6 bg-navy-900 text-white">
-        <div className="container px-4 md:px-6">
+      </main>      <footer className="w-full py-6 bg-navy-900 text-white">
+        <div className="max-w-[2000px] mx-auto px-4 md:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="space-y-4">
               <div className="flex items-center gap-2">

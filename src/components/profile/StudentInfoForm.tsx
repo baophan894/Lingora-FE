@@ -1,15 +1,13 @@
-
 import type React from "react"
 
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from "../../components/ui/button"
+import { Input } from "../../components/ui/input"
+import { Label } from "../../components/ui/label"
+import { Textarea } from "../../components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../components/ui/select"
 import { toast } from "sonner"
-import { Upload, Save, Loader2 } from "lucide-react"
+import { Save, Loader2 } from "lucide-react"
 import { useAppSelector } from "../../store/hooks"
 import type { RootState } from "../../store/store"
 
@@ -32,7 +30,7 @@ interface StudentData {
 
 interface StudentInfoFormProps {
     studentData: StudentData
-    onUpdate: (data: Partial<StudentData>) => void
+    onUpdate: (data: Partial<StudentData>) => Promise<boolean> | void
 }
 
 export function StudentInfoForm({ studentData, onUpdate }: StudentInfoFormProps) {
@@ -84,17 +82,7 @@ export function StudentInfoForm({ studentData, onUpdate }: StudentInfoFormProps)
         }
     }
 
-    const handleAvatarUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0]
-        if (file) {
-            const reader = new FileReader()
-            reader.onload = (e) => {
-                const result = e.target?.result as string
-                handleInputChange("avatar", result)
-            }
-            reader.readAsDataURL(file)
-        }
-    }
+    // Avatar upload is now handled in the header section
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -109,8 +97,22 @@ export function StudentInfoForm({ studentData, onUpdate }: StudentInfoFormProps)
         setIsLoading(true)
 
         try {
-            await new Promise((resolve) => setTimeout(resolve, 1500))
-            onUpdate(formData)
+            // Call onUpdate and check if it returns a promise
+            const result = onUpdate(formData)
+            
+            // If onUpdate returns a promise, wait for it
+            if (result instanceof Promise) {
+                const success = await result
+                if (!success) {
+                    toast.error("Update Failed", {
+                        description: "There was an error updating your profile. Please try again.",
+                    })
+                    return
+                }
+            }
+
+            // Add a small delay for better UX
+            await new Promise((resolve) => setTimeout(resolve, 500))
 
             toast(
                 <div className="bg-green-500 text-white border-0 p-4 rounded-md">
@@ -119,6 +121,7 @@ export function StudentInfoForm({ studentData, onUpdate }: StudentInfoFormProps)
                 </div>
             )
         } catch (error) {
+            console.error("Error in handleSubmit:", error)
             toast.error("Update Failed", {
                 description: "There was an error updating your profile. Please try again.",
             })
@@ -129,44 +132,12 @@ export function StudentInfoForm({ studentData, onUpdate }: StudentInfoFormProps)
 
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Avatar Upload Section */}
-            <div className="flex flex-col items-center space-y-4">
-                <Avatar className="h-32 w-32 border-4 border-gray-100">
-                    <AvatarImage src={formData.avatar || "/placeholder.svg"} alt={`${formData.firstName} ${formData.lastName}`} />
-                    <AvatarFallback className="text-2xl bg-red-800 text-white">
-                        {currentUser?.fullName
-                            .split(" ")
-                            .map((n) => n[0])
-                            .join("")}
-                    </AvatarFallback>
-                </Avatar>
-
-                <div className="relative">
-                    <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleAvatarUpload}
-                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                        id="avatar-upload"
-                    />
-                    <Button
-                        type="button"
-                        variant="outline"
-                        className="bg-red-800 text-white border-0 hover:opacity-90"
-                        asChild
-                    >
-                        <label htmlFor="avatar-upload" className="cursor-pointer">
-                            <Upload className="w-4 h-4 mr-2" />
-                            Upload Photo
-                        </label>
-                    </Button>
-                </div>
-            </div>
+            {/* Avatar upload is handled in the header section */}
 
             {/* Form Fields */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                    <Label htmlFor="fullName">First Name *</Label>
+                    <Label htmlFor="fullName">Họ *</Label>
                     <Input
                         id="fullName"
                         value={formData.firstName}
@@ -178,44 +149,47 @@ export function StudentInfoForm({ studentData, onUpdate }: StudentInfoFormProps)
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="fullName">Last Name *</Label>
+                    <Label htmlFor="fullName">Tên *</Label>
                     <Input
                         id="fullName"
                         value={formData.lastName}
                         onChange={(e) => handleInputChange("lastName", e.target.value)}
                         className={errors.lastName ? "border-red-500" : ""}
-                        placeholder="Enter your last name"
+                        placeholder="Tên của bạn"
                     />
                     {errors.lastName && <p className="text-sm text-red-500">{errors.lastName}</p>}
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="email">Email Address *</Label>
+                    <Label htmlFor="email">Địa chỉ email *</Label>
                     <Input
                         id="email"
                         type="email"
                         value={currentUser?.email}
-                        onChange={(e) => handleInputChange("email", e.target.value)}
-                        className={errors.email ? "border-red-500" : ""}
+                        disabled={true}
+                        readOnly={true}
+                        className={`${errors.email ? "border-red-500" : ""} bg-gray-50 text-gray-700 cursor-not-allowed`}
                         placeholder="Enter your email address"
                     />
+                    <p className="text-xs text-gray-500">Địa chỉ email không thể thay đổi</p>
                     {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="phone">Phone Number *</Label>
+                    <Label htmlFor="phone">Số điện thoại *</Label>
                     <Input
                         id="phone"
                         value={formData.phone}
                         onChange={(e) => handleInputChange("phone", e.target.value)}
                         className={errors.phone ? "border-red-500" : ""}
-                        placeholder="Enter your phone number"
+                        placeholder="Nhập số điện thoại của bạn (bao gồm mã vùng)"
+                        type="tel"      
                     />
                     {errors.phone && <p className="text-sm text-red-500">{errors.phone}</p>}
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="dateOfBirth">Date of Birth *</Label>
+                    <Label htmlFor="dateOfBirth">Ngày sinh *</Label>
                     <Input
                         id="dateOfBirth"
                         type="date"
@@ -227,16 +201,16 @@ export function StudentInfoForm({ studentData, onUpdate }: StudentInfoFormProps)
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="gender">Gender *</Label>
+                    <Label htmlFor="gender">Giới tính *</Label>
                     <Select value={formData.gender} onValueChange={(value) => handleInputChange("gender", value)}>
                         <SelectTrigger className={errors.gender ? "border-red-500" : ""}>
-                            <SelectValue placeholder="Select your gender" />
+                            <SelectValue placeholder="Chọn giới tính" />
                         </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="male">Male</SelectItem>
-                            <SelectItem value="female">Female</SelectItem>
-                            <SelectItem value="other">Other</SelectItem>
-                            <SelectItem value="prefer-not-to-say">Prefer not to say</SelectItem>
+                        <SelectContent className="bg-gray-50">
+                            <SelectItem value="male">Nam</SelectItem>
+                            <SelectItem value="female">Nữ</SelectItem>
+                            <SelectItem value="other">Khác</SelectItem>
+                            <SelectItem value="prefer-not-to-say">Không muốn nói</SelectItem>
                         </SelectContent>
                     </Select>
                     {errors.gender && <p className="text-sm text-red-500">{errors.gender}</p>}
@@ -244,12 +218,12 @@ export function StudentInfoForm({ studentData, onUpdate }: StudentInfoFormProps)
             </div>
 
             <div className="space-y-2">
-                <Label htmlFor="address">Address</Label>
+                <Label htmlFor="address">Địa chỉ</Label>
                 <Textarea
                     id="address"
                     value={formData.address}
                     onChange={(e) => handleInputChange("address", e.target.value)}
-                    placeholder="Enter your full address"
+                    placeholder="Nhập địa chỉ của bạn"
                     rows={3}
                 />
             </div>
@@ -264,12 +238,11 @@ export function StudentInfoForm({ studentData, onUpdate }: StudentInfoFormProps)
                     {isLoading ? (
                         <>
                             <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                            Updating...
                         </>
                     ) : (
                         <>
                             <Save className="w-4 h-4 mr-2" />
-                            Save Changes
+                            Lưu thay đổi
                         </>
                     )}
                 </Button>

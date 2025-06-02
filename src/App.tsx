@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
-import { Toaster } from 'sonner'
+import { Toaster } from 'sonner';
 import { guestRoutes, studentRoutes, teacherRoutes, centerRoutes,chatRoutes } from './routes/routes-config';
 import './App.css';
 

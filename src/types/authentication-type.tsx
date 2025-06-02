@@ -14,21 +14,28 @@ export interface RegisterPayload {
 }
 
 export interface GoogleAuthPayload {
-  accessToken: string    // Token từ Google OAuth
-  profileObj?: {         // Thông tin profile từ Google (optional)
-    email: string
-    name: string
-    imageUrl: string
-    googleId: string
-  }
+  token: string
+  avatar?: string
 }
 
 // Back-end trả về gì thì set ở đây là cái đó
 export interface AuthResponse {
+  data: any
   user: User
   access_token: string
+  refresh_token: string
 }
  
+export interface GoogleAuthResponse {
+  status: number
+  message: string
+  data: {
+    access_token: string
+    refresh_token: string
+    user: User
+  }
+}
+
 export interface RegisterResponse {
   verifyToken: string
 }
