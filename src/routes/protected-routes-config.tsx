@@ -7,11 +7,11 @@ interface ProtectedRouteProps {
   userRole?: string;
 }
 
-const ProtectedRoute = ({ 
-  children, 
+const ProtectedRoute = ({
+  children,
   isAuthenticated,
   allowedRoles,
-  userRole 
+  userRole
 }: ProtectedRouteProps) => {
   const location = useLocation();
 
